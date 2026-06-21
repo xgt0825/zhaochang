@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%E6%89%BE%E5%8E%82%E8%AE%A4%E5%87%86%E8%99%B9%E7%A8%8B%E4%BA%BA%E5%8A%9B%E8%B5%84%E6%BA%90%22%2C%22short_name%22%3A%22%E6%89%BE%E5%8E%82%E7%A5%9E%E5%99%A8%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%222563eb%22%2C%22theme_color%22%3A%22f59e0b%22%7D" />
+  <title>找厂神器 · 工厂招聘查询</title>
+  <style>/* ==================== Reset & Base ==================== */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --primary: #2563eb;
+  --primary-light: #dbeafe;
+  --orange: #f59e0b;
+  --green: #10b981;
+  --red: #ef4444;
+  --bg: #f0f2f5;
+  --card-bg: #ffffff;
+  --text: #1e293b;
+  --text-light: #64748b;
+  --text-muted: #94a3b8;
+  --border: #e2e8f0;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08);
+  --radius: 10px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html { font-size:16px; -webkit-text-size-adjust:100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.5;
+  padding-bottom: calc(16px + var(--safe-bottom));
+  -webkit-font-smoothing: antialiased;
+  user-select: none; -webkit-user-select: none;
+  overflow-x: hidden;
+}
+
+/* ==================== Header ==================== */
+.header {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(135deg, #1e40af, #2563eb);
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(37,99,235,0.25);
+}
+.header-title {
+  font-size:1.2rem; font-weight:700; letter-spacing: 4px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #7c2d12;
+  text-align: center; padding: 12px 16px;
+}
+.header-sub {
+  font-size:0.75rem; opacity:0.9; text-align: center;
+  padding: 8px 16px 12px;
+  user-select: text; -webkit-user-select: text;
+}
+
+/* ==================== Search Bar ==================== */
+.search-wrap {
+  background: var(--bg); padding: 10px 12px;
+}
+.search-bar {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--card-bg); border-radius: 24px;
+  padding: 8px 16px; box-shadow: var(--shadow);
+}
+.search-icon { font-size:1.1rem; flex-shrink:0; opacity:0.5; }
+.search-input {
+  flex:1; border:none; outline:none; font-size:0.88rem;
+  color: var(--text); background:transparent;
+  -webkit-appearance: none;
+}
+.search-input::placeholder { color: var(--text-muted); }
+.btn-search-clear {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: none; background: #e2e8f0; color: var(--text-light);
+  font-size: 0.75rem; cursor: pointer; display: none;
+  align-items: center; justify-content: center;
+}
+.btn-search-clear.visible { display: flex; }
+
+/* ==================== Filter Row ==================== */
+.filter-row {
+  display: flex; gap: 8px; padding: 0 12px 8px;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; white-space: nowrap;
+}
+.filter-row::-webkit-scrollbar { display:none; }
+.filter-chip {
+  flex-shrink: 0; padding: 5px 14px; border-radius: 16px;
+  border: 1.5px solid #d1d5db; background: var(--card-bg);
+  font-size: 0.78rem; color: var(--text-light);
+  cursor: pointer; transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.filter-chip:active { transform: scale(0.95); }
+.filter-chip.active {
+  background: var(--primary); color: #fff; border-color: var(--primary);
+  font-weight: 600;
+}
+.filter-label {
+  font-size: 0.7rem; color: var(--text-muted);
+  padding: 6px 12px 4px; font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* ==================== Result Count ==================== */
+.result-count {
+  padding: 6px 16px; font-size:0.75rem; color: var(--text-muted);
+}
+
+/* ==================== Factory Cards ==================== */
+.factory-list { padding: 0 12px 16px; display:flex; flex-direction:column; gap:10px; }
+
+.factory-card {
+  background: var(--card-bg); border-radius: var(--radius);
+  padding: 14px; box-shadow: var(--shadow);
+  transition: transform 0.12s ease;
+  border-left: 4px solid transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.factory-card:active { transform: scale(0.98); }
+.factory-card.highlight { border-left-color: var(--primary); }
+
+.card-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 8px; margin-bottom: 8px;
+}
+.card-title { font-size:0.95rem; font-weight:700; line-height:1.3; }
+.card-area {
+  flex-shrink: 0; font-size:0.68rem; font-weight:600;
+  padding: 2px 10px; border-radius: 10px;
+}
+
+/* ==================== Card Info Rows ==================== */
+.card-info-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4px 12px; font-size:0.76rem; color: var(--text-light);
+}
+.card-info-grid span { display:flex; align-items:center; gap:4px; }
+.card-info-grid .label { color: var(--text-muted); font-size:0.7rem; }
+.card-info-grid .value { font-weight:500; color: var(--text); }
+
+.card-salary {
+  margin-top: 6px; font-size:0.82rem; font-weight:700; color: var(--red);
+}
+.card-salary::before { content:'💰 '; font-weight:400; }
+
+.card-features {
+  margin-top: 6px; display:flex; flex-wrap:wrap; gap:4px;
+}
+.tag {
+  font-size:0.66rem; padding:2px 8px; border-radius:10px;
+  background: var(--primary-light); color: #1d4ed8;
+  font-weight: 500; white-space: nowrap;
+}
+.tag.good { background: #d1fae5; color: #065f46; }
+.tag.warn { background: #fef3c7; color: #92400e; }
+
+.card-remark {
+  margin-top:6px; font-size:0.7rem; color: var(--text-muted);
+  border-top: 1px dashed var(--border); padding-top:6px;
+}
+
+/* ==================== Detail Modal ==================== */
+.modal-overlay {
+  position: fixed; inset:0; background: rgba(0,0,0,0.5); z-index:400;
+  display:flex; align-items:flex-end; justify-content:center;
+  opacity:0; visibility:hidden; transition: all 0.25s ease;
+}
+.modal-overlay.open { opacity:1; visibility:visible; }
+
+.modal-sheet {
+  background: var(--card-bg); border-radius: 20px 20px 0 0;
+  width: 100%; max-width: 500px; max-height: 80vh;
+  display:flex; flex-direction:column;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+  padding-bottom: var(--safe-bottom);
+}
+.modal-overlay.open .modal-sheet { transform: translateY(0); }
+.modal-handle { width:40px; height:4px; background:#d1d5db; border-radius:2px; margin:10px auto; flex-shrink: 0; }
+.modal-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:6px 20px 12px; flex-shrink:0;
+}
+.modal-title { font-size:1.1rem; font-weight:700; }
+.btn-modal-close {
+  width:30px; height:30px; border-radius:50%; border:none;
+  background: #f1f5f9; font-size:1rem; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+}
+.modal-body { overflow-y:auto; -webkit-overflow-scrolling:touch; padding:0 20px 20px; flex:1; }
+.modal-body .dl { display:grid; grid-template-columns: 72px 1fr; gap:8px; font-size:0.85rem; }
+.modal-body .dl dt { color:var(--text-muted); font-weight:500; }
+.modal-body .dl dd { color:var(--text); }
+.modal-body .dl hr { grid-column: 1/-1; border:none; border-top:1px solid var(--border); margin:4px 0; }
+.modal-body .requirements { color: var(--red); }
+
+/* ==================== Empty State ==================== */
+.empty-state {
+  text-align:center; padding:48px 20px; color:var(--text-muted);
+}
+.empty-state .empty-icon { font-size:3rem; margin-bottom:8px; }
+.empty-state .empty-text { font-size:0.9rem; }
+
+/* ==================== Responsive ==================== */
+@media (min-width:768px) {
+  body { max-width: 600px; margin:0 auto; box-shadow:0 0 30px rgba(0,0,0,0.05); }
+  .factory-list { gap: 12px; padding: 0 16px 16px; }
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  from { opacity:0; transform:translateY(8px); }
+  to { opacity:1; transform:translateY(0); }
+}
+.factory-card { animation: fadeInUp 0.25s ease both; }
+</style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-title">找厂认准虹程人力资源</div>
+    <div class="header-sub">联系微信：leeheesung_</div>
+  </header>
+
+  <div class="search-wrap">
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="search" class="search-input" id="searchInput" placeholder="搜索厂名、地区、岗位…" />
+      <button class="btn-search-clear" id="searchClear">✕</button>
+    </div>
+  </div>
+
+  <div class="filter-label">📍 区域</div>
+  <div class="filter-row loading-row" id="areaBar">加载中...</div>
+
+  <div class="filter-label">🕐 班次</div>
+  <div class="filter-row loading-row" id="shiftBar">加载中...</div>
+
+  <div class="filter-label">💰 结算</div>
+  <div class="filter-row loading-row" id="paymentBar">加载中...</div>
+
+  <div class="result-count" id="resultCount"></div>
+  <div class="factory-list" id="factoryList">
+    <div class="empty-state"><div class="empty-icon">⏳</div><div class="empty-text">正在加载工厂数据...</div></div>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-header">
+        <span class="modal-title" id="modalTitle">工厂详情</span>
+        <button class="btn-modal-close" id="modalClose">✕</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>// ==================== 工厂招聘数据（去重后） ====================
+const factoryData = [
+  {
+    "name": "通淮街汽配厂",
+    "fullName": "江宁通淮街汽配厂",
+    "area": "江宁",
+    "address": "江宁通淮街",
+    "category": "汽配",
+    "gender": "男",
+    "age": "18-40",
+    "shift": "两班倒",
+    "salary": "白班250/天，夜班260/天，不满点对点23/小时",
+    "salaryRange": "6500-7500",
+    "housing": "提供住宿8元/天，水电平摊",
+    "food": "免费工作餐",
+    "bonus": "",
+    "features": "日结, 压三天日结, 组装汽车底盘, 打螺丝",
+    "requirements": "会写字, 做三个月以上, 干不满冻结3天工资",
+    "remark": ""
+  },
+  {
+    "name": "滨江红森林食品厂",
+    "fullName": "滨江红森林食品厂",
+    "area": "江宁",
+    "address": "江宁区牧龙东路1号",
+    "category": "食品",
+    "gender": "男女不限",
+    "age": "20-48",
+    "shift": "两班倒",
+    "salary": "18元/小时，日工时12-15小时",
+    "salaryRange": "6000-7500",
+    "housing": "豪华公寓6-8人间，空调热水器无线网",
+    "food": "三餐免费，休息日也免费吃",
+    "bonus": "",
+    "features": "临时身份证可, 可续签, 站立式工作, 穿连体无尘服",
+    "requirements": "汉族, 办健康证, 美甲及金银首饰不带, 打卡不满7天无工资",
+    "remark": "外包内包岗位, 产品外包装装箱"
+  },
+  {
+    "name": "熊猫本厂",
+    "fullName": "秦淮熊猫本厂（乐金熊猫）",
+    "area": "秦淮",
+    "address": "永丰大道华典办公室一楼",
+    "category": "电子",
+    "gender": "男女不限",
+    "age": "18-45",
+    "shift": "两班倒",
+    "salary": "底薪2660+加班费+夜班补助20.97元/夜+岗位津贴",
+    "salaryRange": "5800-7500",
+    "housing": "包吃住，公寓6-8人间，水电平摊",
+    "food": "包吃住",
+    "bonus": "",
+    "features": "交五险一金, PCB恒温车间, 不穿无尘服, 每周可预支500, 工龄奖每月+300",
+    "requirements": "血压偏高/体重太胖/遗传疾病不要, 油条不要, 全部站班",
+    "remark": "组装洗衣机及零部件, 每月25号发工资"
+  },
+  {
+    "name": "熊猫外协",
+    "fullName": "乐金熊猫外协",
+    "area": "秦淮",
+    "address": "永丰大道华典办公室",
+    "category": "电子",
+    "gender": "男",
+    "age": "18-47",
+    "shift": "长白班",
+    "salary": "与熊猫本厂待遇相近",
+    "salaryRange": "5500-6500",
+    "housing": "可安排宿舍",
+    "food": "提供工作餐",
+    "bonus": "",
+    "features": "长白班, 入职零费用",
+    "requirements": "血压偏高体重太胖遗传疾病不要",
+    "remark": "熊猫外协部门, 长白班为主"
+  },
+  {
+    "name": "中电熊猫照明",
+    "fullName": "中电熊猫照明（京东方外协）",
+    "area": "秦淮",
+    "address": "秦淮区永丰大道",
+    "category": "电子",
+    "gender": "男女不限",
+    "age": "16-38",
+    "shift": "两班倒",
+    "salary": "日结210/天，压7天日结",
+    "salaryRange": "5500-6500",
+    "housing": "当天安排宿舍，标准4人间，住宿扣120元/月",
+    "food": "包吃住，每天2餐",
+    "bonus": "",
+    "features": "国资企业, 环境好, 生产背光模组",
+    "requirements": "穿无尘服, 站立式上班, 无裸露纹身(花臂不行), 工期至少3个月, 做不到冻结3天",
+    "remark": "18号发薪"
+  },
+  {
+    "name": "溧水复合材料厂",
+    "fullName": "溧水复合材料厂",
+    "area": "溧水",
+    "address": "溧水区",
+    "category": "新能源",
+    "gender": "男女不限",
+    "age": "18-48",
+    "shift": "两班倒",
+    "salary": "日结19元/时，月结20元/时，计薪11小时，夜班补贴20/天",
+    "salaryRange": "6000-7500",
+    "housing": "住宿免费，不住宿补贴200元/月",
+    "food": "免费工作餐包吃",
+    "bonus": "",
+    "features": "上六休一, 满7天可预支, 工作轻松",
+    "requirements": "适应倒班, 身体健康无不良嗜好",
+    "remark": "生产风力发电用主梁板材"
+  },
+  {
+    "name": "上汽大通",
+    "fullName": "南京上汽大通",
+    "area": "江宁",
+    "address": "江宁区天元东路1068号1号门",
+    "category": "汽配",
+    "gender": "男",
+    "age": "18-40",
+    "shift": "长白班",
+    "salary": "日结23/小时263-299/天，月结24/小时",
+    "salaryRange": "7000-9000",
+    "housing": "上铺120下铺130/月，押金100随走随退",
+    "food": "餐补中餐12.3元/餐，加班餐14元/餐",
+    "bonus": "",
+    "features": "长白班, 厂吃厂住, 月休3-4天",
+    "requirements": "初中以上, 涂装喷漆需有经验, 戴眼镜不行, 短期工不收",
+    "remark": "尽量公共交通出行"
+  },
+  {
+    "name": "新星得尔塔",
+    "fullName": "新星得尔塔",
+    "area": "江宁",
+    "address": "江宁梅林街85号",
+    "category": "电子",
+    "gender": "女",
+    "age": "18-42",
+    "shift": "两班倒",
+    "salary": "小时工月结20/时，正式工底薪2660+满勤100+加班+五险",
+    "salaryRange": "5500-7000",
+    "housing": "住宿免费水电平摊，住宿押金100退",
+    "food": "免费工作餐，白班2餐，夜班1餐",
+    "bonus": "",
+    "features": "干满一周可预支, 正式工交五险",
+    "requirements": "做事细心责任心强, 不能随便请假, 离职需提前7天申请",
+    "remark": "贴胶带/检验/注塑岗位"
+  },
+  {
+    "name": "浦口网红冰淇淋厂",
+    "fullName": "浦口网红冰淇淋厂",
+    "area": "浦口",
+    "address": "浦口桥林工业园",
+    "category": "食品",
+    "gender": "男女不限",
+    "age": "20-48",
+    "shift": "两班倒",
+    "salary": "周结230元/天押3天后周结",
+    "salaryRange": "6000-6800",
+    "housing": "免费住宿，空调热水器，水电费10元/天",
+    "food": "免费一日三餐",
+    "bonus": "",
+    "features": "恒温车间(15度), 免费办理健康证, 工作轻松",
+    "requirements": "初中以上, 身体健康四肢健全, 手上不能有蜕皮, 必须打卡满7天",
+    "remark": "需带身份证复印件两份"
+  },
+  {
+    "name": "瑞安电气",
+    "fullName": "雨花板桥瑞安电气",
+    "area": "雨花",
+    "address": "雨花台区板桥",
+    "category": "汽配",
+    "gender": "男女不限",
+    "age": "17-47",
+    "shift": "两班倒",
+    "salary": "19元/小时(含补贴)，计薪11.5小时，220左右/天",
+    "salaryRange": "6000-7500",
+    "housing": "豪华2-4人间150/月，水电平摊",
+    "food": "免费包吃2餐",
+    "bonus": "",
+    "features": "零费用入职, 3天后可预支, 每周可预支",
+    "requirements": "初中学历以上, 近视花眼需配眼镜, 小臂以下有纹身不要",
+    "remark": "生产汽车油箱过滤网, 看机器手工活, 站班"
+  },
+  {
+    "name": "菲尼克斯一号基地",
+    "fullName": "江宁百家湖菲尼克斯一号基地",
+    "area": "江宁",
+    "address": "江宁区菲尼克斯路36号",
+    "category": "电子",
+    "gender": "女",
+    "age": "20-35",
+    "shift": "两班倒",
+    "salary": "23元+1元绩效，月综合7500-8000",
+    "salaryRange": "7500-8000",
+    "housing": "住宿含水电400元/月，宿舍离厂区两公里",
+    "food": "免费工作餐",
+    "bonus": "",
+    "features": "体检免费, 离职不扣钱, 中央空调, 不用穿防尘服, 坐班, 吃饭不扣工时, 交商业险100元/月",
+    "requirements": "有装配组装质检经验, 衣着得体, 不能披头散发长指甲",
+    "remark": "南京电子厂天花板, 每月10号发工资"
+  },
+  {
+    "name": "菲尼克斯二号基地",
+    "fullName": "江宁秣陵菲尼克斯二号基地",
+    "area": "江宁",
+    "address": "江宁区秣周东路6号西北门",
+    "category": "电子",
+    "gender": "女",
+    "age": "18-38",
+    "shift": "两班倒",
+    "salary": "23元+1元绩效，月综合7500-8000",
+    "salaryRange": "7500-8000",
+    "housing": "住宿含水电400元/月，宿舍在厂马路对面",
+    "food": "免费工作餐",
+    "bonus": "",
+    "features": "体检免费, 离职不扣钱, 中央空调, 不用穿防尘服, 坐班, 吃饭不扣工时, 缴纳社保",
+    "requirements": "有电子厂装配经验, 手工操作灵活, 能适应倒班",
+    "remark": "电子元件装配, 每月10号发工资"
+  },
+  {
+    "name": "菲尼克斯三号基地",
+    "fullName": "溧水菲尼克斯三号基地",
+    "area": "溧水",
+    "address": "溧水区幸福路",
+    "category": "电子",
+    "gender": "男女不限",
+    "age": "22-35",
+    "shift": "两班倒",
+    "salary": "24元/时，月综合7500-8000",
+    "salaryRange": "7500-8000",
+    "housing": "住宿含水电400元/月，宿舍离厂区两公里，女生没宿舍",
+    "food": "免费工作餐",
+    "bonus": "",
+    "features": "体检免费, 离职不扣钱, 中央空调, 不用穿防尘服",
+    "requirements": "有手工装配经验, 站立作业, 有体力活(重50斤), 能上夜班",
+    "remark": "电动汽车部门, 每月10号发工资"
+  },
+  {
+    "name": "溧水雪糕厂",
+    "fullName": "溧水雪糕厂",
+    "area": "溧水",
+    "address": "溧水区",
+    "category": "食品",
+    "gender": "男女不限",
+    "age": "18-55",
+    "shift": "两班倒",
+    "salary": "月结207元/天，日结200元/天押7天",
+    "salaryRange": "5600-6300",
+    "housing": "住宿100-200元/月，全下铺",
+    "food": "包吃一日三餐",
+    "bonus": "",
+    "features": "恒温车间, 免费体检, 周预支800-1000, 站着上班",
+    "requirements": "识字大部分会写, 能接受穿无尘服, 工期低于3个月工价降1元, 打卡不满7天无薪资",
+    "remark": "大龄工/暑假工友好, 每月20号发薪"
+  },
+  {
+    "name": "东善桥代傲电子",
+    "fullName": "东善桥代傲电子",
+    "area": "江宁",
+    "address": "江宁东善桥",
+    "category": "电子",
+    "gender": "男女不限",
+    "age": "18-35",
+    "shift": "培训期三班倒/后期两班倒",
+    "salary": "白班26元/时286/天，夜班28元/时308/天",
+    "salaryRange": "6000-8000",
+    "housing": "女生提供宿舍",
+    "food": "免费工作餐",
+    "bonus": "",
+    "features": "恒温车间, 不穿无尘服, 可以带手机, 不用体检, 每月15号发薪",
+    "requirements": "男女不限",
+    "remark": "江宁最高工资之一"
+  },
+  {
+    "name": "泸溪河食品厂",
+    "fullName": "江宁秣陵泸溪河食品厂",
+    "area": "江宁",
+    "address": "江宁秣陵",
+    "category": "食品",
+    "gender": "男女不限",
+    "age": "18-45",
+    "shift": "两班倒",
+    "salary": "18元/小时，日薪220-260",
+    "salaryRange": "6000-7500",
+    "housing": "免费包住，公寓式6人间",
+    "food": "免费吃三餐(休息也能吃)，四菜一汤",
+    "bonus": "",
+    "features": "恒温环境, 棉质透气工作服, 干满7天可预支1000",
+    "requirements": "会写字, 能吃苦, 3个月内体检单/健康证, 工期3个月不满按16元/时",
+    "remark": "食品生产操作工(包装/成型/辅助), 20号发工资"
+  },
+  {
+    "name": "谷里电子厂",
+    "fullName": "江宁谷里电子厂（施耐德）",
+    "area": "江宁",
+    "address": "江宁区谷里联东U谷产业园",
+    "category": "电子",
+    "gender": "女",
+    "age": "18-45",
+    "shift": "长白班",
+    "salary": "前3月209元/天，第4月后涨薪+超产奖",
+    "salaryRange": "5500-10000",
+    "housing": "豪华4人间200/月，入职提供电动车，民房80/月可选",
+    "food": "餐补20元/天",
+    "bonus": "",
+    "features": "长白班, 坐班, 不体检, 不是流水线, 恒温车间, 不穿无尘服, 每周可预支, 可转计件",
+    "requirements": "女18-44周岁, 会写字, 至少三个月以上",
+    "remark": "生产通讯电子设备配件, 每月25日发工资"
+  },
+  {
+    "name": "陶吴味洲食品厂",
+    "fullName": "江宁陶吴航空食品厂",
+    "area": "江宁",
+    "address": "江宁陶吴",
+    "category": "食品",
+    "gender": "男女不限",
+    "age": "17-56",
+    "shift": "长白班为主",
+    "salary": "男19元/小时，女18元/小时，夜班21元/小时",
+    "salaryRange": "6000-7000",
+    "housing": "全新2人间只住下铺独立卫浴, 水电全免, 夫妻外宿补贴300元/月",
+    "food": "三餐免费+住宿免费+水电全免",
+    "bonus": "",
+    "features": "不体检, 不面试, 免费办理健康证, 可预支, 夫妻房, 接受藏族彝族",
+    "requirements": "站班, 穿防水胶鞋与无尘服, 禁止灰指甲",
+    "remark": "生产航空食品, 大龄工友好"
+  },
+  {
+    "name": "永镫科技",
+    "fullName": "栖霞永镫科技",
+    "area": "栖霞",
+    "address": "新港经济技术开发区",
+    "category": "电子",
+    "gender": "男女不限",
+    "age": "18-40",
+    "shift": "长白班",
+    "salary": "底薪2660+加班工资",
+    "salaryRange": "5500-6500",
+    "housing": "提供宿舍每人140含水电费",
+    "food": "吃饭全免费，休息日也免费",
+    "bonus": "",
+    "features": "长白班, 坐班, 厂吃厂住, 当天安排住宿",
+    "requirements": "至少三个月以上, 需带身份证复印件+一寸照片+体检单",
+    "remark": "组装平板电脑边框"
+  },
+  {
+    "name": "泉峰科技529新厂",
+    "fullName": "泉峰科技529新厂",
+    "area": "江宁",
+    "address": "江宁区将军大道",
+    "category": "汽配",
+    "gender": "男女不限",
+    "age": "18-45",
+    "shift": "长白班/两班倒",
+    "salary": "20元/小时(15.5+1绩效+3.5在职补贴)，夜班补贴40/晚",
+    "salaryRange": "6000-6500",
+    "housing": "公寓住宿100/月+水电30/月，当天安排住宿",
+    "food": "包吃2顿工作餐",
+    "bonus": "",
+    "features": "手机可带, 轻便工作服, 每周可预支600, 每月10号发工资",
+    "requirements": "初中以上, 纹身不能明显, 站班为主, 本地人/新疆西藏四川彝族不要",
+    "remark": "体检费55元"
+  },
+  {
+    "name": "泉峰德朔电动工具厂",
+    "fullName": "泉峰/德朔电动工具厂",
+    "area": "江宁",
+    "address": "江宁区将军大道159号",
+    "category": "汽配",
+    "gender": "男女不限",
+    "age": "18-40",
+    "shift": "长白班/两班倒",
+    "salary": "长白班20元/小时，两班倒21元/小时，夜班补贴40/晚",
+    "salaryRange": "5500-6500",
+    "housing": "住宿扣130元/月(含水电)，商保100/月",
+    "food": "包吃二顿工作餐",
+    "bonus": "",
+    "features": "免费工作餐, 每周可预支600, 每月10号发薪, 体检费55元",
+    "requirements": "面试带身份证原件",
+    "remark": "电动工具生产"
+  },
+  {
+    "name": "泉峰汽车老厂",
+    "fullName": "泉峰汽车老厂",
+    "area": "江宁",
+    "address": "江宁区",
+    "category": "汽配",
+    "gender": "男女不限",
+    "age": "18-44",
+    "shift": "两班倒",
+    "salary": "劳务工底薪2280+加班+绩效+夜班40/晚，小时工23+2绩效",
+    "salaryRange": "7000-8000",
+    "housing": "四人豪华间100/月，水电均摊",
+    "food": "包吃两顿四人间公寓洗衣机空调",
+    "bonus": "",
+    "features": "厂区免费发劳保鞋, 半月倒班一次",
+    "requirements": "本地人编制已满, 不要学生",
+    "remark": "压铸机/后处理岗位"
+  },
+  {
+    "name": "赛科利（东善桥）",
+    "fullName": "东善桥赛科利",
+    "area": "江宁",
+    "address": "江宁东善桥",
+    "category": "汽配",
+    "gender": "男",
+    "age": "20-40",
+    "shift": "两班倒",
+    "salary": "日结242/天，月结253/天",
+    "salaryRange": "6500-7500",
+    "housing": "住宿6-8人间300元/月，押金100",
+    "food": "免费工作餐",
+    "bonus": "",
+    "features": "机器人焊接, 可晋升班组长, 每周可预支",
+    "requirements": "高中学历, 身高170以上, 有案底不要, 至少三个月, 不满压三天不发",
+    "remark": "机器人自动焊接/人工上下物料"
+  },
+  {
+    "name": "赛科利（浦口）",
+    "fullName": "浦口赛科利",
+    "area": "浦口",
+    "address": "浦口高新开发区",
+    "category": "汽配",
+    "gender": "男",
+    "age": "20-45",
+    "shift": "两班倒",
+    "salary": "日结242/天，月结253/天",
+    "salaryRange": "6500-7500",
+    "housing": "提供宿舍200/月，水电均摊",
+    "food": "免费工作餐",
+    "bonus": "",
+    "features": "免费体检, 先入职后补体检",
+    "requirements": "至少三个月, 不满压三天不发, 上六休一",
+    "remark": "上下物料/抬车身板件, 简单体力活"
+  },
+  {
+    "name": "申迪汽配厂",
+    "fullName": "浦口申迪汽配厂",
+    "area": "浦口",
+    "address": "浦口高新开发区",
+    "category": "汽配",
+    "gender": "男",
+    "age": "18-45",
+    "shift": "两班倒",
+    "salary": "压三天日结：白班240/天，夜班250/天",
+    "salaryRange": "6500-7500",
+    "housing": "提供住宿200/月，水电平摊",
+    "food": "免费工作餐",
+    "bonus": "",
+    "features": "日结",
+    "requirements": "会写字, 至少三个月, 不满压的不发",
+    "remark": "手动焊接/人工上下物料"
+  },
+  {
+    "name": "东善桥电子厂",
+    "fullName": "东善桥电子厂（凯湖电子）",
+    "area": "江宁",
+    "address": "江宁东善桥",
+    "category": "电子",
+    "gender": "女为主",
+    "age": "18-45",
+    "shift": "长白班",
+    "salary": "18元/小时",
+    "salaryRange": "5500-6500",
+    "housing": "宿舍200/月",
+    "food": "包吃两餐",
+    "bonus": "",
+    "features": "长白班, 坐班, 恒温车间, 工作轻松, 可预支工资, 每月25号发薪",
+    "requirements": "男不超过170, 穿无尘服, 做满3个月以上, 抽烟/大面积纹身不行",
+    "remark": "电子背光贴板/组装"
+  },
+  {
+    "name": "胜太路汽配厂",
+    "fullName": "胜太路汽配厂（东华力威）",
+    "area": "江宁",
+    "address": "江宁胜太路",
+    "category": "汽配",
+    "gender": "男",
+    "age": "18-48",
+    "shift": "两班倒",
+    "salary": "日结242/天，月结253/天",
+    "salaryRange": "7000-8000",
+    "housing": "提供住宿300/月，水电平摊，押金100",
+    "food": "免费工作餐",
+    "bonus": "",
+    "features": "不体检, 压三天日结, 每月25号发薪",
+    "requirements": "会写字, 短期工不要, 三个月以上, 不满工期冻结3天",
+    "remark": "机器人辅助上下料/手工焊, 站立式工作"
+  },
+  {
+    "name": "川流精密",
+    "fullName": "秣陵川流精密",
+    "area": "江宁",
+    "address": "江宁秣陵",
+    "category": "汽配",
+    "gender": "男女不限",
+    "age": "18-45",
+    "shift": "长白班为主",
+    "salary": "前半月20/时，后计件",
+    "salaryRange": "6500-9000",
+    "housing": "吃住在厂，水电平摊",
+    "food": "吃住在厂",
+    "bonus": "",
+    "features": "简单轻松手工活, 不是流水线, 满7天每周可预支",
+    "requirements": "必须能接受上夜班",
+    "remark": "注塑/包覆岗位"
+  },
+  {
+    "name": "东善桥羽毛球厂",
+    "fullName": "东善桥羽毛球厂",
+    "area": "江宁",
+    "address": "江宁东善桥",
+    "category": "其他",
+    "gender": "女",
+    "age": "18-50",
+    "shift": "长白班",
+    "salary": "前2月18/时，第3月后20/时，计薪11小时+全勤+超产奖",
+    "salaryRange": "5000-7000",
+    "housing": "豪华宿舍空调洗衣机卫浴200/月水电平摊",
+    "food": "免费两餐",
+    "bonus": "",
+    "features": "长白班, 全坐班, 恒温空调车间, 不是流水线, 不穿无尘服, 免体检, 手工活轻松",
+    "requirements": "未满3个月离职按15/时结算",
+    "remark": "羽毛球组装/简单轻工手工, 车间有轻微胶味"
+  },
+  {
+    "name": "康尼新能源",
+    "fullName": "栖霞康尼新能源",
+    "area": "栖霞",
+    "address": "栖霞区恒竞路11号南门",
+    "category": "新能源",
+    "gender": "男女不限",
+    "age": "18-42",
+    "shift": "长白班/两班倒",
+    "salary": "20元/小时，220/天，夜班补贴60/天",
+    "salaryRange": "6000-7000",
+    "housing": "住宿扣80/月，水电平摊，有班车",
+    "food": "免费工作餐",
+    "bonus": "",
+    "features": "岗位好, 工作轻松, 工时高, 不穿无尘服, 满7天可预支, 每月27号发薪",
+    "requirements": "体检费自理, 有体检单可用",
+    "remark": "做新能源充电桩"
+  },
+  {
+    "name": "由甲申田新能源",
+    "fullName": "六合由甲申田新能源",
+    "area": "六合",
+    "address": "六合智能制造产业园",
+    "category": "新能源",
+    "gender": "女",
+    "age": "18-48",
+    "shift": "两班倒",
+    "salary": "第1-3月18/时，第4-6月19/时，第7月起20/时，日结最高230/天",
+    "salaryRange": "5500-6500",
+    "housing": "当天安排住宿200/月，水电均摊",
+    "food": "园区食堂自理",
+    "bonus": "",
+    "features": "不穿无尘服, 恒温有站有坐, 压5天后日结",
+    "requirements": "至少三个月, 做不到压的不发",
+    "remark": "组装新能源小电池包"
+  },
+  {
+    "name": "凯米科技",
+    "fullName": "凯米科技",
+    "area": "栖霞",
+    "address": "南京马群/句容和宁路",
+    "category": "机械",
+    "gender": "女",
+    "age": "23-40",
+    "shift": "两班倒",
+    "salary": "日结白班209/天夜班238.5/天，月结最高250/天",
+    "salaryRange": "6500-7500",
+    "housing": "2-3人间, 吃住在厂, 伙食好四菜一汤",
+    "food": "早1块中3块晚3块(共7元/天)",
+    "bonus": "",
+    "features": "6个月转正交五险一金, 不需要穿无尘服",
+    "requirements": "限女性, 身高不低于158, 体重45-75公斤, 无美甲无纹身",
+    "remark": "生产环保过滤器/组装/接线"
+  },
+  {
+    "name": "创阳电子",
+    "fullName": "东山万达-创阳电子",
+    "area": "江宁",
+    "address": "江宁万达章村附近",
+    "category": "电子",
+    "gender": "男女不限",
+    "age": "18-40",
+    "shift": "两班倒",
+    "salary": "底薪2660+加班+满勤200+岗位津贴+夜班补贴10元/夜",
+    "salaryRange": "5500-7500",
+    "housing": "宿舍4人间, 厂区到宿舍300米, 水电平摊, 不住宿补贴260/月",
+    "food": "免费工作餐",
+    "bonus": "",
+    "features": "不体检, 不穿无尘服, 中途可预支, 每月10号发工资, 上六休一, 有年终奖",
+    "requirements": "血压偏高/体重太胖/遗传疾病不要, 油条不要",
+    "remark": "品质岗位需经验"
+  },
+  {
+    "name": "杰仁电子",
+    "fullName": "东山万达-杰仁电子",
+    "area": "江宁",
+    "address": "江宁万达章村附近",
+    "category": "电子",
+    "gender": "男女不限",
+    "age": "18-35",
+    "shift": "长白班",
+    "salary": "21元/时含1元住宿补贴",
+    "salaryRange": "5000-6000",
+    "housing": "无住宿(含1元住宿补贴)",
+    "food": "免费工作餐",
+    "bonus": "",
+    "features": "长白班, 活轻松不累, 中途可预支, 每月15号发薪",
+    "requirements": "要细心, 穿无尘服, 视力好, 戴眼镜不要",
+    "remark": "生产电脑反光片/胶带类产品"
+  },
+  {
+    "name": "江宁谷里食品厂",
+    "fullName": "江宁谷里食品厂（速冻）",
+    "area": "江宁",
+    "address": "江宁谷里",
+    "category": "食品",
+    "gender": "男女不限",
+    "age": "18-52",
+    "shift": "长白班",
+    "salary": "计件多劳多得",
+    "salaryRange": "7000-9000",
+    "housing": "免费精装修3人间, 空调洗衣机热水器, 宿舍厂外1千米, 3天后免费提供电动车",
+    "food": "免费工作餐",
+    "bonus": "",
+    "features": "常温车间, 穿静电服非无尘服, 半自动化车间, 16号发薪",
+    "requirements": "识字, 站班, 身体健康, 高血压/灰指甲/皮肤病/眼镜300度以上不要",
+    "remark": "生产蹄膀/扇骨肉等速冻食品, 打包/称重/锯工/装箱"
+  },
+  {
+    "name": "江宁音响厂",
+    "fullName": "江宁音响厂",
+    "area": "江宁",
+    "address": "江宁区康平街",
+    "category": "电子",
+    "gender": "男女不限",
+    "age": "18-40",
+    "shift": "长白班为主",
+    "salary": "月结20/时210/天，压5天可日预支200",
+    "salaryRange": "5000-6000",
+    "housing": "豪华6-8人间, 吃住免费, 水电平摊",
+    "food": "包吃住",
+    "bonus": "",
+    "features": "空调车间, 大部分坐班, 管理轻松自由",
+    "requirements": "无大面积纹身, 案底不接受, 不满6天无工资",
+    "remark": "测试/检验/装配/SMT"
+  },
+  {
+    "name": "溢泰环保",
+    "fullName": "百家湖殷巷溢泰环保",
+    "area": "江宁",
+    "address": "百家湖殷巷",
+    "category": "机械",
+    "gender": "男女不限",
+    "age": "18-45",
+    "shift": "长白班/两班倒",
+    "salary": "21.7元/小时(含绩效和在职补贴)，夜班+40，6-9月+300/月",
+    "salaryRange": "6500-7800",
+    "housing": "住宿6人间水电平摊, 厂内宿舍, 住宿费30/月",
+    "food": "包两顿工作餐",
+    "bonus": "",
+    "features": "包吃住, 每月10号发工资, 满月额外补助2元/时",
+    "requirements": "纹身烟疤不收, 有案底不收",
+    "remark": "生产饮水机, 简单手工活"
+  },
+  {
+    "name": "滨江国企机械厂",
+    "fullName": "滨江国企机械厂",
+    "area": "江宁",
+    "address": "江宁滨江",
+    "category": "机械",
+    "gender": "男",
+    "age": "20-40",
+    "shift": "两班倒",
+    "salary": "白班242/天，夜班253/天，年终奖+季度奖+绩效",
+    "salaryRange": "6500-8000",
+    "housing": "酒店式公寓4-5人间, 免费WIFI, 住宿免费水电平摊",
+    "food": "包吃工作餐",
+    "bonus": "",
+    "features": "可学技术, 年终奖, 季度奖金, 车间有空调, 管理人性化, 20号发薪, 可预支",
+    "requirements": "有数控机加工/机电/汽修经验优先, 愿意学也可以, 不满5天无薪资, 工期3个月不满按20/h",
+    "remark": "装配/看机台上下料"
+  },
+  {
+    "name": "丹阳鱼跃医疗",
+    "fullName": "丹阳鱼跃医疗厂",
+    "area": "丹阳",
+    "address": "丹阳市",
+    "category": "电子",
+    "gender": "男",
+    "age": "18-38",
+    "shift": "两班倒",
+    "salary": "日结白班220/天，夜班240/天",
+    "salaryRange": "6000-7000",
+    "housing": "住宿100/月水电平摊, 可安排夫妻房",
+    "food": "两顿工作餐自助餐",
+    "bonus": "",
+    "features": "包进, 入职7天可申请电动车, 当天安排宿舍",
+    "requirements": "部分岗位需穿无尘服, 工期至少3个月",
+    "remark": "生产血糖仪/制氧机, 有坐有站"
+  },
+  {
+    "name": "江宁基地",
+    "fullName": "江宁基地（上汽大通）",
+    "area": "江宁",
+    "address": "江宁区天元东路1068号1号门",
+    "category": "汽配",
+    "gender": "男",
+    "age": "40以内",
+    "shift": "长白班",
+    "salary": "涂装/冲压/焊工/车桥装调",
+    "salaryRange": "7000-9000",
+    "housing": "",
+    "food": "",
+    "bonus": "",
+    "features": "",
+    "requirements": "有汽车厂相关经验优先, 高中以上, 短期工不收",
+    "remark": "涂装工120人/冲压工7人/焊工50人/车桥装调5人"
+  },
+  {
+    "name": "尚界华为物流",
+    "fullName": "江宁尚界华为物流",
+    "area": "江宁",
+    "address": "江宁尚界",
+    "category": "物流",
+    "gender": "男女不限",
+    "age": "18-50",
+    "shift": "长白班",
+    "salary": "普工/数据员20元/时，叉车工23元/时",
+    "salaryRange": "5500-6500",
+    "housing": "公寓式住宿240/月，水电平摊，押金100",
+    "food": "餐补12元/顿",
+    "bonus": "",
+    "features": "长白班, 工作稳定轻松自由, 上六休一",
+    "requirements": "数据员需熟练操作电脑做表格, 叉车工需叉车证, 不满7天不产生工资",
+    "remark": "普工/数据员/叉车工"
+  },
+  {
+    "name": "埃斯顿",
+    "fullName": "埃斯顿（水阁路+吉印大道）",
+    "area": "江宁",
+    "address": "水阁路16号/苏源大道1号门",
+    "category": "机械",
+    "gender": "男女不限",
+    "age": "18-42",
+    "shift": "长白班/两班倒",
+    "salary": "20元/小时220-260/天，支持日结210/天",
+    "salaryRange": "6000-8000",
+    "housing": "水阁路: 公寓式宿舍8元/天; 吉印大道: 男生宿舍押金200水电平摊",
+    "food": "免费提供2顿工作餐",
+    "bonus": "",
+    "features": "做工业机器人, 工期最少三个月, 满7天产生薪资",
+    "requirements": "有工厂经验, 电控柜接线需电工证/接线经验, 喷涂需1-3年经验",
+    "remark": "电机装配/电控柜接线/喷涂岗位"
+  },
+  {
+    "name": "禄口牛奶仓",
+    "fullName": "禄口牛奶仓",
+    "area": "江宁",
+    "address": "江宁禄口",
+    "category": "物流",
+    "gender": "男女不限",
+    "age": "20-45",
+    "shift": "长白班",
+    "salary": "前期计时200/天，后计件300/天，压3天周结",
+    "salaryRange": "6000-9000",
+    "housing": "不包吃住",
+    "food": "不包吃住",
+    "bonus": "",
+    "features": "工资周结, 长白班, 活简单",
+    "requirements": "手脚麻利, 做过分拣打包物流优先, 至少三个月, 不满3天无工资",
+    "remark": "包装打包牛奶"
+  },
+  {
+    "name": "拓润电子",
+    "fullName": "栖霞拓润电子",
+    "area": "栖霞",
+    "address": "栖霞区尧新大道307号",
+    "category": "电子",
+    "gender": "男女不限",
+    "age": "18-45",
+    "shift": "两班倒",
+    "salary": "白班21.5元/时，夜班22.5元/时，计薪10.5小时",
+    "salaryRange": "6500-7500",
+    "housing": "当天安排宿舍, 包吃住, 水电平分, 不住宿有免费厂车",
+    "food": "包吃住",
+    "bonus": "",
+    "features": "工时稳定, 宿舍离厂很近",
+    "requirements": "本地户口已满, 明显纹身不要, 站着上班需穿连体无尘服",
+    "remark": "品质/仓库岗位"
+  },
+  {
+    "name": "禄口智能电子",
+    "fullName": "江宁禄口智能电子",
+    "area": "江宁",
+    "address": "江宁禄口华商路",
+    "category": "电子",
+    "gender": "男女不限",
+    "age": "18-38",
+    "shift": "长白班为主",
+    "salary": "月结白班209/天，夜班253/天",
+    "salaryRange": "5500-6500",
+    "housing": "豪华公寓独立卫生间热水器洗衣机, 距厂800米扣200/月",
+    "food": "免费工作餐",
+    "bonus": "",
+    "features": "长白班, 坐班, 不穿无尘服, 空调车间, 每月25号发工资",
+    "requirements": "必须有电子厂经验, 接受少数民族, 不满三天无工资",
+    "remark": ""
+  },
+  {
+    "name": "南京中兴",
+    "fullName": "南京中兴通讯",
+    "area": "江宁",
+    "address": "江宁滨江开发区",
+    "category": "电子",
+    "gender": "男",
+    "age": "18-40",
+    "shift": "两班倒",
+    "salary": "20元/小时(含餐补2元)",
+    "salaryRange": "5500-6500",
+    "housing": "豪华四人间空调热水器独立卫生间, 住宿水电燃气6元/天",
+    "food": "餐补含在时薪中, 需自行办理饭卡",
+    "bonus": "",
+    "features": "每月15号发工资, 中途可预支, 体检费满月报销",
+    "requirements": "打卡不满7天或旷工自离无工资",
+    "remark": ""
+  },
+  {
+    "name": "南京奥托立夫",
+    "fullName": "南京奥托立夫",
+    "area": "栖霞",
+    "address": "新港开发区恒谊路19号一号门",
+    "category": "汽配",
+    "gender": "男女不限",
+    "age": "21-37",
+    "shift": "两班倒",
+    "salary": "26元/时或日结25元/时",
+    "salaryRange": "7000-8500",
+    "housing": "住宿300元/月水电均摊",
+    "food": "免费工作餐",
+    "bonus": "",
+    "features": "不穿无尘衣, 不过安检门, 恒温车间, 一周一倒班, 面试当天安排宿舍",
+    "requirements": "会写26个字母, 身高不超180, 不能太胖, 小臂不能有明显纹身, 不满5天无薪资",
+    "remark": "生产汽车安全带, 检测包装组装, 站立式上班"
+  },
+  {
+    "name": "英华达科技",
+    "fullName": "殷巷英华达科技",
+    "area": "江宁",
+    "address": "江宁殷巷",
+    "category": "电子",
+    "gender": "男女不限",
+    "age": "18-35",
+    "shift": "长白班",
+    "salary": "22元/小时+绩效0-800/月",
+    "salaryRange": "5500-6500",
+    "housing": "住宿费100元/月(含水电费)",
+    "food": "吃住免费",
+    "bonus": "",
+    "features": "长白班坐班, 厂吃厂住, 不穿无尘服, 恒温车间, 不需经验",
+    "requirements": "认识26个英文字母, 能接受夜班, 工期3个月不满按18/时",
+    "remark": "生产宠物环/显示屏/蓝牙耳机/数据线"
+  },
+  {
+    "name": "芯德半导体",
+    "fullName": "浦口芯德半导体",
+    "area": "浦口",
+    "address": "江浦区林春路8号",
+    "category": "电子",
+    "gender": "男女不限",
+    "age": "18-38",
+    "shift": "两班倒",
+    "salary": "底薪2500+满勤300+绩效500+岗补100+加班+夜班60/天+住房补贴300",
+    "salaryRange": "6000-7500",
+    "housing": "提供免费宿舍, 宿舍有班车",
+    "food": "提供工作餐",
+    "bonus": "",
+    "features": "单位直签, 入职缴纳五险一金, 上四休二/五休一/六休一, 连续服务奖, 带薪年假, 各种礼金, 子女教育津贴, 年度体检",
+    "requirements": "高中/中专起(本科不要), 穿防尘服, 无尘车间",
+    "remark": "需自己去面试"
+  },
+  {
+    "name": "江宁汽车仓库",
+    "fullName": "江宁汽车仓库",
+    "area": "江宁",
+    "address": "江宁区",
+    "category": "物流",
+    "gender": "男",
+    "age": "18-40",
+    "shift": "两班倒",
+    "salary": "普工月结21/时, 叉车工23/时, 压五天后周结",
+    "salaryRange": "5500-7000",
+    "housing": "住宿10元/天水电均摊, 当天安排住宿",
+    "food": "餐补15.5元/顿",
+    "bonus": "",
+    "features": "活简单, 留人好单位",
+    "requirements": "叉车工需市场监管局叉车证, 至少三个月离职提前报备, 案底/纹身/体检不合格不要",
+    "remark": "普工/拖车工/叉车工岗位"
+  },
+  {
+    "name": "夏普电子",
+    "fullName": "南京夏普电子",
+    "area": "栖霞",
+    "address": "新港开发区",
+    "category": "电子",
+    "gender": "男女不限",
+    "age": "16-35",
+    "shift": "长白班",
+    "salary": "20元/时+满月出勤额外补贴500元",
+    "salaryRange": "5000-6500",
+    "housing": "",
+    "food": "",
+    "bonus": "",
+    "features": "基本上不穿无尘服, 长白班",
+    "requirements": "",
+    "remark": "十二点半夏普宿舍食堂面试"
+  },
+  {
+    "name": "高淳华玻光电",
+    "fullName": "高淳华玻光电",
+    "area": "高淳",
+    "address": "高淳区",
+    "category": "电子",
+    "gender": "男女不限",
+    "age": "18-40",
+    "shift": "两班倒",
+    "salary": "20元/小时, 白班220/天, 夜班231/天",
+    "salaryRange": "6500-7500",
+    "housing": "包吃包住, 免费管三餐(休息也免费), 4人间空调卫生间",
+    "food": "免费三餐, 休息也免费吃",
+    "bonus": "",
+    "features": "人性化管理, 有站有坐, 手工工作轻松, 每月25号发工资",
+    "requirements": "发薪日不在职按18发, 体检费100自理",
+    "remark": "生产平板/车载导航/电脑屏幕玻璃"
+  },
+  {
+    "name": "禄口蓝天路食品厂",
+    "fullName": "禄口蓝天路食品厂",
+    "area": "江宁",
+    "address": "江宁区蓝天路219号新禄汇产业中心",
+    "category": "食品",
+    "gender": "男女不限",
+    "age": "18-52",
+    "shift": "长白班(凌晨上班)",
+    "salary": "18元/小时, 每天10-11小时",
+    "salaryRange": "5000-6000",
+    "housing": "提供住宿10元/天(包含水电)",
+    "food": "包吃免费工作餐",
+    "bonus": "",
+    "features": "恒温车间, 每月25号发薪",
+    "requirements": "至少3个月, 需穿无尘服",
+    "remark": "包装三明治/火腿面包等超市快餐品, 凌晨上班"
+  },
+  {
+    "name": "秣陵飞洋电子",
+    "fullName": "秣陵飞洋电子",
+    "area": "江宁",
+    "address": "江宁秣陵",
+    "category": "电子",
+    "gender": "女",
+    "age": "18-40",
+    "shift": "长白班",
+    "salary": "19元/时, 计薪11-13小时, 月工时330+",
+    "salaryRange": "6500-7500",
+    "housing": "4人间住宿100元/月, 水电平摊",
+    "food": "有吃有住",
+    "bonus": "",
+    "features": "长白班, 不体检, 坐班, 民族不限, 做满一周可预支, 月底发上月工资",
+    "requirements": "工期最低三个月, 手脚太慢不行",
+    "remark": "流水线作业, 电动汽车零部件打螺丝装配"
+  },
+  {
+    "name": "水阁路纸杯厂",
+    "fullName": "江宁水阁路纸杯厂",
+    "area": "江宁",
+    "address": "江宁水阁路",
+    "category": "其他",
+    "gender": "男女不限",
+    "age": "18-50",
+    "shift": "两班倒",
+    "salary": "白班210/天, 夜班220/天+全勤+计件",
+    "salaryRange": "5500-7000",
+    "housing": "吃住都在厂内, 免费公寓式住宿只收水电费",
+    "food": "含20元/天餐补",
+    "bonus": "",
+    "features": "日结7天后每天发200元, 0费用入职, 免费办健康证, 可带手机",
+    "requirements": "本地人已满, 不满7天离职无工资, 半月一倒班",
+    "remark": "生产一次性纸杯, 女工做质检男工看机台, 殷巷邮局12:00接"
+  },
+  {
+    "name": "南京吸管厂",
+    "fullName": "南京吸管厂",
+    "area": "江宁",
+    "address": "江宁区",
+    "category": "其他",
+    "gender": "男女不限",
+    "age": "18-48",
+    "shift": "两班倒",
+    "salary": "白班190/天, 夜班200/天+全勤200+超产+餐补20元/天",
+    "salaryRange": "6000-7000",
+    "housing": "带行李当天安排宿舍",
+    "food": "餐补20元/天",
+    "bonus": "",
+    "features": "0费用入职, 每周可预支500-1000, 满3个月报销路费, 不卡烟疤纹身",
+    "requirements": "会普通话会写字, 可接受少数民族需报备, 禁学生工短期工, 需无犯罪记录证明",
+    "remark": "生产一次性纸杯和饮品吸管, 每月25号发工资"
+  },
+  {
+    "name": "殷巷精博电子",
+    "fullName": "殷巷精博电子（美资）",
+    "area": "江宁",
+    "address": "江宁殷巷",
+    "category": "电子",
+    "gender": "男女不限",
+    "age": "18-38",
+    "shift": "两班倒",
+    "salary": "白班24元/时264/天, 夜班26元/时286/天, 可日结",
+    "salaryRange": "6500-7500",
+    "housing": "男生梧桐居公寓240/月, 女生暂无宿舍",
+    "food": "免费工作餐（五菜一汤一奶）",
+    "bonus": "",
+    "features": "恒温车间, 每月8号发薪, 日结可选(押三天后结)",
+    "requirements": "须会默写26个字母, 有工厂倒班经验, 接受12小时两班倒, 穿大褂静电服, 站班, 车间不能带手机, 不能随便请假, 不满四天无工资",
+    "remark": "接受不忌口少数民族"
+  },
+  {
+    "name": "浦口华天科技",
+    "fullName": "浦口华天科技（半导体）",
+    "area": "浦口",
+    "address": "浦口区",
+    "category": "电子",
+    "gender": "男女不限",
+    "age": "18-35",
+    "shift": "两班倒",
+    "salary": "首月24/时，次月25/时+16元餐补/天，综合6800-8000",
+    "salaryRange": "6800-8000",
+    "housing": "公寓4-6人间独立卫生间, 住宿70/月水电均摊, 柜子押金50",
+    "food": "餐补16元/天打餐卡无法取现, 需自行充值餐费",
+    "bonus": "",
+    "features": "半导体领头企业, 质检芯片/操作机台测试",
+    "requirements": "初中以上须熟悉26字母, 少数民族不忌口可接收, 大面积纹身不可以, 本地人河南户籍已满, 短期工学信网在籍不要, 体检115",
+    "remark": "早上7:30殷巷邮局发车, 自行9:00前到, 20号发薪, 商业保险80"
+  },
+  {
+    "name": "飞腾电子厂",
+    "fullName": "暑假工飞腾电子厂",
+    "area": "江宁",
+    "address": "江宁区",
+    "category": "电子",
+    "gender": "男女不限",
+    "age": "16-45",
+    "shift": "长白班",
+    "salary": "18元/时, 点对点200/天, 压三天后日结200, 人走账清",
+    "salaryRange": "5500-7000",
+    "housing": "公寓式住宿, 包吃包住, 水电平摊",
+    "food": "包吃包住",
+    "bonus": "",
+    "features": "日结, 短期工一个月, 不体检, 坐班, 不穿无尘服, 不过电子门, 可带手机, 管理人性化",
+    "requirements": "无",
+    "remark": "11点邮局接人, 厂门口1点到"
+  },
+  {
+    "name": "溧水弘益电气厂",
+    "fullName": "溧水弘益电气厂",
+    "area": "溧水",
+    "address": "溧水区",
+    "category": "电子",
+    "gender": "女为主",
+    "age": "16-45",
+    "shift": "长白班为主",
+    "salary": "18元/时, 夜班补贴10元/晚, 每月15号发薪",
+    "salaryRange": "6000-7500",
+    "housing": "宿舍空调热水器齐全, 厂内食宿",
+    "food": "包工作餐",
+    "bonus": "",
+    "features": "长白班为主, 厂内食宿, 工作简单, 可带手机",
+    "requirements": "不满月按16元/时, 7天内离职/自离无工资, 商保80/月",
+    "remark": "生产汽车线束, 轻松好做, 邮局12点接人自行13:00到"
+  },
+  {
+    "name": "尚界超级工厂",
+    "fullName": "江宁尚界超级工厂（原上汽大众）",
+    "area": "江宁",
+    "address": "江宁区秦淮路69号",
+    "category": "汽配",
+    "gender": "男",
+    "age": "18-40",
+    "shift": "长白班",
+    "salary": "底薪4300+津贴+加班费1.5倍, 年终奖2个月月薪, 高温费1200/年, 五险一金",
+    "salaryRange": "6500-8500",
+    "housing": "住宿情况待确认",
+    "food": "两大荤+两素+水果/酸奶, 工作10小时以上提供两餐",
+    "bonus": "",
+    "features": "新厂区新车型晋升空间大, 空调恒温车间, 机械臂喷漆, 五险一金, 免费体检, 年终奖",
+    "requirements": "中专以上, 不忌口少数民族都要, 短袖盖不住纹身/烟疤/上汽协解无法面试, 能接受倒班, 本地人已满",
+    "remark": "涂装部门油漆岗, 车身/总装部门也要, 周一上午9:30到厂门口"
+  },
+  {
+    "name": "延锋座椅厂",
+    "fullName": "殷巷延锋座椅厂",
+    "area": "江宁",
+    "address": "江宁殷巷",
+    "category": "汽配",
+    "gender": "男",
+    "age": "18-40",
+    "shift": "两班倒",
+    "salary": "月结24/时264-288/天, 节假日66/时",
+    "salaryRange": "7000-8000",
+    "housing": "免费住厂对面, 水电平摊",
+    "food": "免费三餐, 休息也能吃",
+    "bonus": "",
+    "features": "活简单自由, 节假日高薪, 不扣商保, 常规体检满月报销",
+    "requirements": "工期至少3个月, 体检138满月报销",
+    "remark": "总装组装岗位, 中午12:10自到厂门口"
+  },
+  {
+    "name": "滁州达亮电子",
+    "fullName": "滁州达亮电子",
+    "area": "滁州",
+    "address": "滁州市",
+    "category": "电子",
+    "gender": "男女不限",
+    "age": "16-40",
+    "shift": "两班倒",
+    "salary": "18元/时+餐补6.7元/餐, 月工时280-310",
+    "salaryRange": "6000-7000",
+    "housing": "厂吃厂住四人间, 住宿100/月水电均摊",
+    "food": "工作餐需先充值餐补",
+    "bonus": "",
+    "features": "接收暑假工, 少数民族/忌口都能接收, 清真食堂, 恒温车间, 穿无尘服可选, 7天可预支, 包进",
+    "requirements": "不满7天无薪资, 商保100/月, 急辞有扣款, 每月15号发薪, 需体检",
+    "remark": "缺口200人, 机台操作/组装, 简单易上手, 12:30面试"
+  },
+  {
+    "name": "六合利德东方",
+    "fullName": "六合利德东方",
+    "area": "六合",
+    "address": "六合区江北大道581号5号门",
+    "category": "汽配",
+    "gender": "男女不限",
+    "age": "18-42",
+    "shift": "两班倒",
+    "salary": "计件薪资, 首月保底6500, 次月保底7500",
+    "salaryRange": "7500-11000",
+    "housing": "小区公寓式2-4人间, 宿舍离厂6公里有厂车接送",
+    "food": "包吃包住, 一日三餐, 顿顿有牛奶",
+    "bonus": "",
+    "features": "包吃包住, 工资特别高, 周周可预支, 班车接送",
+    "requirements": "须提前开无犯罪记录证明+身份证复印件, 烟瘾大的不要, 短期工不要, 技能体能测试, 熟练26字母, 不限地区",
+    "remark": "生产汽车空调管和刹车管, 机加工/普工/焊工/自动装配/辅助工/手工装配和铆合工, 下午1点面试, 殷巷11点接人"
+  },
+  {
+    "name": "雨花台无人机维修厂",
+    "fullName": "雨花台无人机维修厂",
+    "area": "雨花",
+    "address": "雨花台区",
+    "category": "电子",
+    "gender": "男女不限",
+    "age": "18-38",
+    "shift": "长白班为主",
+    "salary": "21元/时(19底薪+1餐补+1绩效), 3天后日结210/天, 剩余15号补",
+    "salaryRange": "5500-6500",
+    "housing": "住宿110/月, 面试通过即可安排",
+    "food": "吃饭自理",
+    "bonus": "",
+    "features": "日结, 不放弃基本包进, 上六休一, 工作简单轻松",
+    "requirements": "认识26字母, 能吃苦耐劳适应加班, 纹身烟疤不可以, 富士康体系离职一个月方可入职",
+    "remark": "无人机拆卸与组装/维修品性能测试/打包发货, 流水线为主"
+  },
+  {
+    "name": "雨花台电子厂",
+    "fullName": "雨花台长白班电子厂",
+    "area": "雨花",
+    "address": "雨花台区",
+    "category": "电子",
+    "gender": "男女不限",
+    "age": "18-45",
+    "shift": "长白班",
+    "salary": "24元/时, 计薪10小时, 240/天, 住宿23/时",
+    "salaryRange": "6000-6800",
+    "housing": "住宿扣1元/时, 水电平摊",
+    "food": "没有吃住",
+    "bonus": "",
+    "features": "长白班, 坐班居多, 不穿无尘服, 工作轻松, 可预支, 少数民族接收, 基本包进",
+    "requirements": "上六休一",
+    "remark": "操作工/组装/测试/质检/SMT, 下午1点面试, 殷巷12:30接人"
+  },
+  {
+    "name": "溧水开沃新能源",
+    "fullName": "溧水开沃新能源汽车厂",
+    "area": "溧水",
+    "address": "溧水区",
+    "category": "新能源",
+    "gender": "男",
+    "age": "18-47",
+    "shift": "长白班",
+    "salary": "普工20/H+饭补8/顿, 焊工28/H+饭补8/顿, 计薪11.5h",
+    "salaryRange": "6500-8500",
+    "housing": "免费厂内宿舍6-8人间, 独立卫生间淋浴空调, 水电均摊",
+    "food": "厂吃厂住, 包吃包住",
+    "bonus": "",
+    "features": "长白班, 0入职, 周周可预支800, 不体检, 厂吃厂住",
+    "requirements": "有大型汽配厂装配经验需试岗(会气泵电钻), 没经验等第二批, 工期三个月, 不满前7天按100/天, 不满7天及自离无工资, 商险100/月",
+    "remark": "总装/底盘/涂装/综调车间, 面试下午1:30"
+  },
+  {
+    "name": "溧水昌德成电器厂",
+    "fullName": "溧水昌德成电器厂",
+    "area": "溧水",
+    "address": "溧水区",
+    "category": "电子",
+    "gender": "女",
+    "age": "17-45",
+    "shift": "长白班",
+    "salary": "18元/时, 月工时330, 次月25号发薪",
+    "salaryRange": "5500-6500",
+    "housing": "包吃住, 吃住都在厂区",
+    "food": "厂吃厂住都免费",
+    "bonus": "",
+    "features": "不体检包进, 入职0费用, 长白班, 厂吃厂住, 满7天可预支, 不穿无尘服",
+    "requirements": "配合加班, 商保100/月, 3天内离职或旷工自离无工资, 不满3月工期前7天按100/天",
+    "remark": "愿意干基本包进, 下午1点半面试, 殷巷邮局11:30接人"
+  },
+  {
+    "name": "溧水大风车",
+    "fullName": "溧水大风车（苏鸿集团）",
+    "area": "溧水",
+    "address": "溧水东岗路8号",
+    "category": "机械",
+    "gender": "男",
+    "age": "23-43",
+    "shift": "两班倒",
+    "salary": "前期小时工21/时6000-7000, 3-6月转正后7000-12000+五险一金",
+    "salaryRange": "7000-12000",
+    "housing": "需自租宿舍(附近两三百一间), 满月住宿补贴300",
+    "food": "白班包两餐夜班一餐",
+    "bonus": "",
+    "features": "正式工五险一金, 税后年薪10-15W, 全自动化加工线, 无重体力, 工时全年稳定",
+    "requirements": "初中以上, 需体检或三个月内体检单, 半月倒班",
+    "remark": "普工/辅助工/巡检/看机台, 殷巷泸溪河12:00接, 自行14:00前到"
+  },
+  {
+    "name": "溧水创维注塑厂",
+    "fullName": "溧水创维注塑厂",
+    "area": "溧水",
+    "address": "溧水区",
+    "category": "电子",
+    "gender": "男女不限",
+    "age": "18-55",
+    "shift": "两班倒为主",
+    "salary": "18元/时+餐补14元+夜班补贴10元, 月综合5500-6500, 次月可选计件",
+    "salaryRange": "5500-6500",
+    "housing": "宿舍6-8人间, 空调冰箱洗衣机热水器齐全, 水电平摊",
+    "food": "餐补14元/天",
+    "bonus": "",
+    "features": "大龄工, 无经验一学就会, 管理自由, 简单识字, 干满一周可预支, 15号发薪",
+    "requirements": "月休2-3天",
+    "remark": "普工/拉货/组装/注塑, 下午1点半面试, 殷巷12点发车"
+  },
+  {
+    "name": "溧水我乐家居",
+    "fullName": "溧水我乐家居",
+    "area": "溧水",
+    "address": "溧水区",
+    "category": "其他",
+    "gender": "男女不限",
+    "age": "20-40",
+    "shift": "两班倒",
+    "salary": "普工首月5500-6500, 次月计件6500-8500, 质检综合6500",
+    "salaryRange": "5500-8500",
+    "housing": "酒店式住宿4-6人间, 空调热水器独立卫生间无线网, 免费8件套, 保洁每天打扫, 15天换洗被褥",
+    "food": "三餐免费, 休息也免费吃, 吃住在厂区",
+    "bonus": "",
+    "features": "三餐免费, 夫妻房, 不是流水线, 可带手机, 宾馆式住宿, 保洁打扫",
+    "requirements": "上六休一, 月休4天",
+    "remark": "普工(男)/质检(女), 殷巷邮局11:30发车, 自行下午1点到"
+  },
+  {
+    "name": "浦口智能科技",
+    "fullName": "浦口智能科技",
+    "area": "浦口",
+    "address": "浦口区龙山南路",
+    "category": "电子",
+    "gender": "男为主",
+    "age": "18-40",
+    "shift": "长白班",
+    "salary": "20元/时, 计薪10.5小时, 每月10号发薪",
+    "salaryRange": "5500-6500",
+    "housing": "场内豪华4人间住宿, 住宿扣150/月",
+    "food": "包吃包住",
+    "bonus": "",
+    "features": "长白班, 缺口大面试几乎包进, 包吃包住",
+    "requirements": "有纹身案底的不要, 工期最少3个月",
+    "remark": "坐地铁配电柜/空调配电柜, 接线/打螺丝/仓库, 下午1点面试, 需带身份证复印件"
+  },
+  {
+    "name": "浦口安吉",
+    "fullName": "浦口安吉",
+    "area": "浦口",
+    "address": "浦口区",
+    "category": "物流",
+    "gender": "男女不限",
+    "age": "50以内",
+    "shift": "两班倒",
+    "salary": "普工/拖车20/时, 叉车23/时, 压3天后日结",
+    "salaryRange": "6000-7500",
+    "housing": "住宿200/月, 水电平摊",
+    "food": "工作餐免费",
+    "bonus": "",
+    "features": "日结, 活简单, 留人好单位",
+    "requirements": "叉车工需市场监管局叉车证会四角定位, 至少三个月做不到压的不发",
+    "remark": "拖货/货物整理/摆放/出库/入库, 上午9点或下午1点面试"
+  },
+  {
+    "name": "浦口上汽名爵",
+    "fullName": "浦口上汽名爵",
+    "area": "浦口",
+    "address": "浦口区",
+    "category": "汽配",
+    "gender": "男",
+    "age": "18-35",
+    "shift": "两班倒",
+    "salary": "月结首月24/时次月25/时, 日结24/时压5天, 最高305/天",
+    "salaryRange": "6500-9500",
+    "housing": "厂外公寓4-6人间独立卫浴, 住宿10元/天, 水电均摊",
+    "food": "两大荤+两素+水果/酸奶",
+    "bonus": "",
+    "features": "日结, 食宿好, 补贴多, 工资高, 每月15号发薪可预支, 夜班补贴满月30/班",
+    "requirements": "高中/中专以上, 工期至少三个月, 离职需正常办理, 体检70-140元",
+    "remark": "普通操作工, 上午8点面试"
+  }
+];
+
+// 依赖: 区域列表、班次筛选、结算方式筛选
+const areas = ['全部', '江宁', '秦淮', '浦口', '栖霞', '溧水', '雨花', '六合', '丹阳', '高淳', '滁州'];
+const shiftFilters = ['全部', '长白班', '两班倒', '长白班为主'];
+const paymentFilters = ['全部', '日结', '月结', '周结'];
+</script>
+  <script>// ==================== 状态管理 ====================
+const state = {
+  searchQuery: '',
+  areaFilter: '全部',
+  shiftFilter: '全部',
+  paymentFilter: '全部',
+};
+
+// ==================== DOM 引用 ====================
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => document.querySelectorAll(sel);
+
+const dom = {
+  searchInput: $('#searchInput'),
+  searchClear: $('#searchClear'),
+  areaBar: $('#areaBar'),
+  shiftBar: $('#shiftBar'),
+  paymentBar: $('#paymentBar'),
+  resultCount: $('#resultCount'),
+  factoryList: $('#factoryList'),
+  modalOverlay: $('#modalOverlay'),
+  modalBody: $('#modalBody'),
+  modalTitle: $('#modalTitle'),
+  modalClose: $('#modalClose'),
+};
+
+// ==================== 筛选逻辑 ====================
+function getFilteredData() {
+  let data = factoryData;
+
+  // 区域筛选
+  if (state.areaFilter !== '全部') {
+    data = data.filter(f => f.area === state.areaFilter);
+  }
+
+  // 班次筛选
+  if (state.shiftFilter !== '全部') {
+    data = data.filter(f => f.shift.includes(state.shiftFilter));
+  }
+
+  // 结算方式筛选
+  if (state.paymentFilter !== '全部') {
+    data = data.filter(f => {
+      const txt = f.salary + f.features + (f.remark || '');
+      return txt.includes(state.paymentFilter);
+    });
+  }
+
+  // 搜索筛选
+  const q = state.searchQuery.toLowerCase().trim();
+  if (q) {
+    data = data.filter(f => {
+      return (
+        f.name.toLowerCase().includes(q) ||
+        f.fullName.toLowerCase().includes(q) ||
+        f.area.toLowerCase().includes(q) ||
+        f.address.toLowerCase().includes(q) ||
+        f.category.toLowerCase().includes(q) ||
+        f.salary.toLowerCase().includes(q) ||
+        f.features.toLowerCase().includes(q) ||
+        (f.remark || '').toLowerCase().includes(q)
+      );
+    });
+  }
+
+  return data;
+}
+
+// ==================== 渲染区域标签 ====================
+function renderAreas() {
+  dom.areaBar.innerHTML = areas.map(a => `
+    <button class="filter-chip area-chip ${a === state.areaFilter ? 'active' : ''}" data-area="${a}">
+      ${a}
+    </button>
+  `).join('');
+
+  dom.areaBar.querySelectorAll('.area-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      state.areaFilter = chip.dataset.area;
+      renderAreas();
+      renderResults();
+    });
+  });
+}
+
+// ==================== 渲染班次标签 ====================
+function renderShiftFilters() {
+  dom.shiftBar.innerHTML = shiftFilters.map(s => `
+    <button class="filter-chip shift-chip ${s === state.shiftFilter ? 'active' : ''}" data-shift="${s}">
+      ${s}
+    </button>
+  `).join('');
+
+  dom.shiftBar.querySelectorAll('.shift-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      state.shiftFilter = chip.dataset.shift;
+      renderShiftFilters();
+      renderResults();
+    });
+  });
+}
+
+// ==================== 渲染结算方式标签 ====================
+function renderPaymentFilters() {
+  dom.paymentBar.innerHTML = paymentFilters.map(p => `
+    <button class="filter-chip pay-chip ${p === state.paymentFilter ? 'active' : ''}" data-pay="${p}">
+      ${p}
+    </button>
+  `).join('');
+
+  dom.paymentBar.querySelectorAll('.pay-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      state.paymentFilter = chip.dataset.pay;
+      renderPaymentFilters();
+      renderResults();
+    });
+  });
+}
+
+// ==================== 渲染卡片列表 ====================
+function renderResults() {
+  const data = getFilteredData();
+
+  dom.resultCount.textContent = `共 ${data.length} 家工厂`;
+
+  if (data.length === 0) {
+    dom.factoryList.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🔍</div>
+        <div class="empty-text">没有找到匹配的工厂，试试调整筛选条件</div>
+      </div>
+    `;
+    return;
+  }
+
+  dom.factoryList.innerHTML = data.map((f, i) => {
+    // 构建标签
+    const tags = [];
+    if (f.shift.includes('长白班')) tags.push('<span class="tag good">长白班</span>');
+    else if (f.shift.includes('两班倒')) tags.push('<span class="tag">两班倒</span>');
+    if (f.features.includes('坐班')) tags.push('<span class="tag good">坐班</span>');
+    if (f.features.includes('五险') || f.features.includes('五险一金')) tags.push('<span class="tag good">五险一金</span>');
+    if (f.features.includes('日结')) tags.push('<span class="tag warn">日结</span>');
+    if (f.features.includes('不体检')) tags.push('<span class="tag good">不体检</span>');
+    if (f.features.includes('包吃包住') || f.features.includes('厂吃厂住')) tags.push('<span class="tag">包吃住</span>');
+    if (f.features.includes('不穿无尘服')) tags.push('<span class="tag good">不穿无尘服</span>');
+
+    return `
+      <div class="factory-card highlight" data-id="${i}" style="animation-delay:${i * 0.03}s">
+        <div class="card-header">
+          <div class="card-title">${f.name}</div>
+          <div class="card-area">📍 ${f.area}</div>
+        </div>
+        <div class="card-info-grid">
+          <span><span class="label">性别</span><span class="value">${f.gender}</span></span>
+          <span><span class="label">年龄</span><span class="value">${f.age}</span></span>
+          <span><span class="label">班次</span><span class="value">${f.shift}</span></span>
+          <span><span class="label">月薪</span><span class="value">${f.salaryRange}元</span></span>
+        </div>
+        <div class="card-salary">${f.salary}</div>
+        <div class="card-features">${tags.join('')}</div>
+        ${f.features ? `<div class="card-remark">🏷️ ${f.features.split(',').slice(0, 3).join(' · ')}</div>` : ''}
+      </div>
+    `;
+  }).join('');
+
+  // 绑定点击事件
+  dom.factoryList.querySelectorAll('.factory-card').forEach((card) => {
+    card.addEventListener('click', () => {
+      const idx = parseInt(card.dataset.id);
+      openDetail(getFilteredData()[idx]);
+    });
+  });
+}
+
+// ==================== 详情弹窗 ====================
+function openDetail(f) {
+  if (!f) return;
+
+  dom.modalTitle.textContent = f.name;
+  dom.modalBody.innerHTML = `
+    <dl class="dl">
+      <dt>全称</dt><dd>${f.fullName}</dd>
+      <dt>地址</dt><dd>${f.address || '未提供'}</dd>
+      <hr>
+      <dt>类型</dt><dd>${f.category}</dd>
+      <dt>性别</dt><dd>${f.gender}</dd>
+      <dt>年龄</dt><dd>${f.age}</dd>
+      <dt>班次</dt><dd>${f.shift}</dd>
+      <hr>
+      <dt>日薪</dt><dd>${f.salary}</dd>
+      <dt>月薪</dt><dd>${f.salaryRange}元</dd>
+      <hr>
+      <dt>食宿</dt><dd>${f.housing || '未提供'}</dd>
+      <dt>餐食</dt><dd>${f.food || '未提供'}</dd>
+      <hr>
+      <dt>亮点</dt><dd>${f.features || '无'}</dd>
+      
+      ${f.requirements ? `<hr><dt class="requirements">要求</dt><dd class="requirements">${f.requirements}</dd>` : ''}
+      ${f.remark ? `<hr><dt>备注</dt><dd>${f.remark}</dd>` : ''}
+    </dl>
+  `;
+
+  dom.modalOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDetail() {
+  dom.modalOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ==================== 搜索 ====================
+function handleSearch(value) {
+  state.searchQuery = value;
+  dom.searchClear.classList.toggle('visible', value.length > 0);
+  renderResults();
+}
+
+// ==================== 初始化 ====================
+function init() {
+  renderAreas();
+  renderShiftFilters();
+  renderPaymentFilters();
+  renderResults();
+
+  // 搜索输入
+  dom.searchInput.addEventListener('input', (e) => handleSearch(e.target.value));
+  dom.searchClear.addEventListener('click', () => {
+    dom.searchInput.value = '';
+    handleSearch('');
+  });
+
+  // 详情弹窗关闭
+  dom.modalClose.addEventListener('click', closeDetail);
+  dom.modalOverlay.addEventListener('click', (e) => {
+    if (e.target === dom.modalOverlay) closeDetail();
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+</script>
+
+</body>
+</html>
