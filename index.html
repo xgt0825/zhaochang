@@ -1628,6 +1628,42 @@ const factoryData = [
     "features": "日结, 食宿好, 补贴多, 工资高, 每月15号发薪可预支, 夜班补贴满月30/班",
     "requirements": "高中/中专以上, 工期至少三个月, 离职需正常办理, 体检70-140元",
     "remark": "普通操作工, 上午8点面试"
+  },
+  {
+    "name": "汤山白象食品",
+    "fullName": "汤山白象食品",
+    "area": "江宁",
+    "address": "汤山镇",
+    "category": "食品",
+    "gender": "男女不限",
+    "age": "18-45",
+    "shift": "两班倒",
+    "salary": "普工:月结白班228/天夜班240/天, 日结230/天压5天; 叉车工264/天",
+    "salaryRange": "6000-7200",
+    "housing": "4人间免费住宿, 免费提供被褥床上用品, 住宿水电全部免费",
+    "food": "免费三餐, 住宿水电全部免费",
+    "bonus": "",
+    "features": "日结, 叉车工, 包三餐, 住宿免费, 厂内宿舍, 面试包进",
+    "requirements": "不接收有案底人员, 厂区禁烟, 上班需穿分体无尘服, 站班",
+    "remark": "普工/叉车工/外包/内包/投包机/调酱/制面/分类, 江宁殷巷12点发车, 自行1点到东北1门"
+  },
+  {
+    "name": "舍弗勒",
+    "fullName": "大学城淳化【舍弗勒】（德企）",
+    "area": "江宁",
+    "address": "江宁区建衡路88号东北门",
+    "category": "汽配",
+    "gender": "男女不限",
+    "age": "18-40",
+    "shift": "两班倒为主",
+    "salary": "3-7月24元/时, 8-2月26元/时, 点对点计薪12小时, 288-312/天",
+    "salaryRange": "6000-7500",
+    "housing": "提供住宿扣200/月, 水电平摊",
+    "food": "免费工作餐",
+    "bonus": "",
+    "features": "优质德企, 交五险, 免费体检, 转正五险一金, 12小时8小时交替班",
+    "requirements": "机加工需有机加工经验; 装配工大专毕业, 大件装配上下料; 女工需搬得动35斤工件, 能倒夜班; 不要短期工, 工期3个月及以上",
+    "remark": "生产汽车精密轴承及零部件, 12:30厂门口接（东北门）"
   }
 ];
 
@@ -1643,20 +1679,6 @@ const state = {
   shiftFilter: '全部',
   paymentFilter: '全部',
 };
-
-// 推荐厂区映射
-const recommendedFactories = [
-  { display: '白象', keyword: '白象' },
-  { display: '菲尼克斯', keyword: '菲尼克斯' },
-  { display: '江宁汽车仓库', keyword: '江宁汽车仓库' },
-  { display: '芯德', keyword: '芯德' },
-  { display: '尚界超级工厂', keyword: '尚界超级工厂' },
-  { display: '滨江国企', keyword: '滨江国企' },
-  { display: '泉峰科技529', keyword: '泉峰科技529' },
-  { display: '音响厂', keyword: '音响厂' },
-  { display: '舍弗勒', keyword: '舍弗勒' },
-  { display: '华玻', keyword: '华玻' },
-];
 
 // ==================== DOM 引用 ====================
 const $ = (sel) => document.querySelector(sel);
@@ -1676,6 +1698,20 @@ const dom = {
   modalTitle: $('#modalTitle'),
   modalClose: $('#modalClose'),
 };
+
+// 推荐厂区映射
+const recommendedFactories = [
+  { display: '白象', keyword: '白象' },
+  { display: '菲尼克斯', keyword: '菲尼克斯' },
+  { display: '江宁汽车仓库', keyword: '江宁汽车仓库' },
+  { display: '芯德', keyword: '芯德' },
+  { display: '尚界超级工厂', keyword: '尚界超级工厂' },
+  { display: '滨江国企', keyword: '滨江国企' },
+  { display: '泉峰科技529', keyword: '泉峰科技529' },
+  { display: '音响厂', keyword: '音响厂' },
+  { display: '舍弗勒', keyword: '舍弗勒' },
+  { display: '华玻', keyword: '华玻' },
+];
 
 // ==================== 筛选逻辑 ====================
 function getFilteredData() {
@@ -1866,12 +1902,16 @@ function closeDetail() {
 // ==================== 推荐厂区 ====================
 function renderRecommended() {
   dom.recGrid.innerHTML = recommendedFactories.map(r => {
+    // 找匹配的工厂数量
     const matched = factoryData.filter(f => f.name.includes(r.keyword) || f.fullName.includes(r.keyword));
-    return `<div class="rec-card" data-keyword="${r.keyword}">
+    return `
+      <div class="rec-card" data-keyword="${r.keyword}">
         ${r.display}
-        <span style="display:block;font-size:0.58rem;font-weight:400;color:#92400e;margin-top:2px;">${matched.length} 个岗位</span>
-      </div>`;
+        <span class="rec-tag" style="display:block;font-size:0.58rem;font-weight:400;color:#92400e;margin-top:2px;">${matched.length} 个岗位</span>
+      </div>
+    `;
   }).join('');
+
   dom.recGrid.querySelectorAll('.rec-card').forEach(card => {
     card.addEventListener('click', () => {
       const keyword = card.dataset.keyword;
