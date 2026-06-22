@@ -106,6 +106,35 @@ body {
   letter-spacing: 0.5px;
 }
 
+/* ==================== Recommendation Section ==================== */
+.recommended-section {
+  padding: 8px 12px 4px;
+}
+.recommended-title {
+  font-size: 0.78rem; font-weight: 700; color: var(--primary);
+  padding: 0 4px 8px;
+}
+.recommended-grid {
+  display: flex; gap: 8px; overflow-x: auto;
+  -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  padding-bottom: 8px;
+}
+.recommended-grid::-webkit-scrollbar { display: none; }
+.rec-card {
+  flex-shrink: 0; padding: 10px 14px;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border: 2px solid #f59e0b;
+  border-radius: 12px; white-space: nowrap;
+  font-size: 0.82rem; font-weight: 700;
+  color: #7c2d12;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  text-align: center;
+}
+.rec-card:active { transform: scale(0.95); }
+
 /* ==================== Result Count ==================== */
 .result-count {
   padding: 6px 16px; font-size:0.75rem; color: var(--text-muted);
@@ -244,6 +273,11 @@ body {
 
   <div class="filter-label">💰 结算</div>
   <div class="filter-row loading-row" id="paymentBar">加载中...</div>
+
+  <div class="recommended-section">
+    <div class="recommended-title">⭐ 推荐厂区</div>
+    <div class="recommended-grid" id="recGrid"></div>
+  </div>
 
   <div class="result-count" id="resultCount"></div>
   <div class="factory-list" id="factoryList">
@@ -1610,6 +1644,20 @@ const state = {
   paymentFilter: '全部',
 };
 
+// 推荐厂区映射
+const recommendedFactories = [
+  { display: '白象', keyword: '白象' },
+  { display: '菲尼克斯', keyword: '菲尼克斯' },
+  { display: '江宁汽车仓库', keyword: '江宁汽车仓库' },
+  { display: '芯德', keyword: '芯德' },
+  { display: '尚界超级工厂', keyword: '尚界超级工厂' },
+  { display: '滨江国企', keyword: '滨江国企' },
+  { display: '泉峰科技529', keyword: '泉峰科技529' },
+  { display: '音响厂', keyword: '音响厂' },
+  { display: '舍弗勒', keyword: '舍弗勒' },
+  { display: '华玻', keyword: '华玻' },
+];
+
 // ==================== DOM 引用 ====================
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
@@ -1622,6 +1670,7 @@ const dom = {
   paymentBar: $('#paymentBar'),
   resultCount: $('#resultCount'),
   factoryList: $('#factoryList'),
+  recGrid: $('#recGrid'),
   modalOverlay: $('#modalOverlay'),
   modalBody: $('#modalBody'),
   modalTitle: $('#modalTitle'),
@@ -1814,6 +1863,26 @@ function closeDetail() {
   document.body.style.overflow = '';
 }
 
+// ==================== 推荐厂区 ====================
+function renderRecommended() {
+  dom.recGrid.innerHTML = recommendedFactories.map(r => {
+    const matched = factoryData.filter(f => f.name.includes(r.keyword) || f.fullName.includes(r.keyword));
+    return `<div class="rec-card" data-keyword="${r.keyword}">
+        ${r.display}
+        <span style="display:block;font-size:0.58rem;font-weight:400;color:#92400e;margin-top:2px;">${matched.length} 个岗位</span>
+      </div>`;
+  }).join('');
+  dom.recGrid.querySelectorAll('.rec-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const keyword = card.dataset.keyword;
+      dom.searchInput.value = keyword;
+      state.searchQuery = keyword;
+      dom.searchClear.classList.toggle('visible', true);
+      renderResults();
+    });
+  });
+}
+
 // ==================== 搜索 ====================
 function handleSearch(value) {
   state.searchQuery = value;
@@ -1826,6 +1895,7 @@ function init() {
   renderAreas();
   renderShiftFilters();
   renderPaymentFilters();
+  renderRecommended();
   renderResults();
 
   // 搜索输入
