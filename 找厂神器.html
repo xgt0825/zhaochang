@@ -292,60 +292,21 @@ body {
 </style>
 </head>
 <body>
-
-  <header class="header">
-    <div class="header-title">找厂认准虹程人力资源</div>
-    <div class="header-sub">联系微信：leeheesung_</div>
-  </header>
-
-  <div class="tab-panel active" id="tab-recommend">
-    <div class="rec-detail-grid" id="recDetail">
-      <div class="empty-state"><div class="empty-icon">⭐</div><div class="empty-text">加载推荐厂区...</div></div>
-    </div>
-  </div>
-
+  <header class="header"><div class="header-title">找厂认准虹程人力资源</div><div class="header-sub">联系微信：leeheesung_</div></header>
+  <div class="tab-panel active" id="tab-recommend"><div class="rec-detail-grid" id="recDetail"><div class="empty-state"><div class="empty-icon">⭐</div><div class="empty-text">加载推荐厂区...</div></div></div></div>
   <div class="tab-panel" id="tab-filter">
-    <div class="search-wrap">
-      <div class="search-bar">
-        <span class="search-icon">🔍</span>
-        <input type="search" class="search-input" id="searchInput" placeholder="搜索厂名、地区、岗位…" />
-        <button class="btn-search-clear" id="searchClear">✕</button>
-      </div>
-    </div>
-    <div class="filter-label">📍 区域</div>
-    <div class="filter-row loading-row" id="areaBar">加载中...</div>
-    <div class="filter-label">🕐 班次</div>
-    <div class="filter-row loading-row" id="shiftBar">加载中...</div>
-    <div class="filter-label">💰 结算</div>
-    <div class="filter-row loading-row" id="paymentBar">加载中...</div>
+    <div class="search-wrap"><div class="search-bar"><span class="search-icon">🔍</span><input type="search" class="search-input" id="searchInput" placeholder="搜索厂名、地区、岗位…" /><button class="btn-search-clear" id="searchClear">✕</button></div></div>
+    <div class="filter-label">📍 区域</div><div class="filter-row loading-row" id="areaBar">加载中...</div>
+    <div class="filter-label">🕐 班次</div><div class="filter-row loading-row" id="shiftBar">加载中...</div>
+    <div class="filter-label">💰 结算</div><div class="filter-row loading-row" id="paymentBar">加载中...</div>
     <div class="result-count" id="resultCount"></div>
-    <div class="factory-list" id="factoryList">
-      <div class="empty-state"><div class="empty-icon">⏳</div><div class="empty-text">加载工厂数据...</div></div>
-    </div>
+    <div class="factory-list" id="factoryList"><div class="empty-state"><div class="empty-icon">⏳</div><div class="empty-text">加载工厂数据...</div></div></div>
   </div>
-
   <div class="tab-bar">
-    <button class="tab-btn active" data-tab="recommend">
-      <span class="tab-icon">⭐</span>
-      <span>推荐</span>
-    </button>
-    <button class="tab-btn" data-tab="filter">
-      <span class="tab-icon">🔍</span>
-      <span>筛选</span>
-    </button>
+    <button class="tab-btn active" data-tab="recommend"><span class="tab-icon">⭐</span><span>推荐</span></button>
+    <button class="tab-btn" data-tab="filter"><span class="tab-icon">🔍</span><span>筛选</span></button>
   </div>
-
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal-sheet">
-      <div class="modal-handle"></div>
-      <div class="modal-header">
-        <span class="modal-title" id="modalTitle">工厂详情</span>
-        <button class="btn-modal-close" id="modalClose">✕</button>
-      </div>
-      <div class="modal-body" id="modalBody"></div>
-    </div>
-  </div>
-
+  <div class="modal-overlay" id="modalOverlay"><div class="modal-sheet"><div class="modal-handle"></div><div class="modal-header"><span class="modal-title" id="modalTitle">工厂详情</span><button class="btn-modal-close" id="modalClose">✕</button></div><div class="modal-body" id="modalBody"></div></div></div>
   <script>// ==================== 工厂招聘数据（去重后） ====================
 const factoryData = [
   {
@@ -1722,13 +1683,13 @@ const factoryData = [
 const areas = ['全部', '江宁', '秦淮', '浦口', '栖霞', '溧水', '雨花', '六合', '丹阳', '高淳', '滁州'];
 const shiftFilters = ['全部', '长白班', '两班倒', '长白班为主'];
 const paymentFilters = ['全部', '日结', '月结', '周结'];
-</script>
-  <script>// ==================== 状态管理 ====================
+</script><script>// ==================== 状态管理 ====================
 const state = {
   searchQuery: '',
   areaFilter: '全部',
   shiftFilter: '全部',
   paymentFilter: '全部',
+  currentTab: 'recommend',
 };
 
 // ==================== DOM 引用 ====================
@@ -2050,6 +2011,4 @@ if (document.readyState === 'loading') {
   init();
 }
 </script>
-
-</body>
-</html>
+</body></html>

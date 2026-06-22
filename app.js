@@ -4,6 +4,7 @@ const state = {
   areaFilter: '全部',
   shiftFilter: '全部',
   paymentFilter: '全部',
+  currentTab: 'recommend',
 };
 
 // ==================== DOM 引用 ====================
