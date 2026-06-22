@@ -18,7 +18,7 @@ const dom = {
   paymentBar: $('#paymentBar'),
   resultCount: $('#resultCount'),
   factoryList: $('#factoryList'),
-  recGrid: $('#recGrid'),
+  recDetail: $('#recDetail'),
   modalOverlay: $('#modalOverlay'),
   modalBody: $('#modalBody'),
   modalTitle: $('#modalTitle'),
@@ -225,28 +225,64 @@ function closeDetail() {
   document.body.style.overflow = '';
 }
 
-// ==================== 推荐厂区 ====================
-function renderRecommended() {
-  dom.recGrid.innerHTML = recommendedFactories.map(r => {
-    // 找匹配的工厂数量
-    const matched = factoryData.filter(f => f.name.includes(r.keyword) || f.fullName.includes(r.keyword));
+// ==================== 推荐厂区详情页 ====================
+function renderRecommendedDetail() {
+  const matched = [];
+  recommendedFactories.forEach(r => {
+    const list = factoryData.filter(f => f.name.includes(r.keyword) || f.fullName.includes(r.keyword));
+    list.forEach(f => {
+      if (!matched.some(m => m.name === f.name && m.fullName === f.fullName)) matched.push(f);
+    });
+  });
+
+  dom.recDetail.innerHTML = matched.map(f => {
+    const tags = [];
+    if (f.shift.includes('长白班')) tags.push('<span class="tag good">长白班</span>');
+    else if (f.shift.includes('两班倒')) tags.push('<span class="tag">两班倒</span>');
+    if (f.features.includes('坐班')) tags.push('<span class="tag good">坐班</span>');
+    if (f.features.includes('五险') || f.features.includes('五险一金')) tags.push('<span class="tag good">五险一金</span>');
+    if (f.features.includes('日结')) tags.push('<span class="tag warn">日结</span>');
+    if (f.features.includes('不体检')) tags.push('<span class="tag good">不体检</span>');
+    if (f.features.includes('包吃包住') || f.features.includes('厂吃厂住')) tags.push('<span class="tag">包吃住</span>');
+    if (f.features.includes('不穿无尘服')) tags.push('<span class="tag good">不穿无尘服</span>');
+
     return `
-      <div class="rec-card" data-keyword="${r.keyword}">
-        ${r.display}
-        <span class="rec-tag" style="display:block;font-size:0.58rem;font-weight:400;color:#92400e;margin-top:2px;">${matched.length} 个岗位</span>
+      <div class="rec-detail-card" data-name="${f.name}" data-full="${f.fullName}">
+        <div class="rec-detail-header">
+          <span class="rec-star">⭐</span>
+          <span class="rec-detail-name">${f.name}</span>
+          <span style="margin-left:auto;font-size:0.68rem;font-weight:600;color:var(--primary);padding:2px 10px;border-radius:10px;background:var(--primary-light);flex-shrink:0;">${f.area}</span>
+        </div>
+        <div class="rec-detail-info">
+          <span><span class="label">性别</span><span class="value">${f.gender}</span></span>
+          <span><span class="label">年龄</span><span class="value">${f.age}</span></span>
+          <span><span class="label">班次</span><span class="value">${f.shift}</span></span>
+          <span><span class="label">月薪</span><span class="value">${f.salaryRange}元</span></span>
+        </div>
+        <div class="rec-detail-salary">${f.salary}</div>
+        ${tags.length ? `<div class="rec-detail-tags">${tags.join('')}</div>` : ''}
+        ${f.remark ? `<div style="margin-top:4px;font-size:0.7rem;color:var(--text-muted);padding-top:4px;border-top:1px dashed var(--border);">${f.remark}</div>` : ''}
       </div>
     `;
   }).join('');
 
-  dom.recGrid.querySelectorAll('.rec-card').forEach(card => {
+  dom.recDetail.querySelectorAll('.rec-detail-card').forEach(card => {
     card.addEventListener('click', () => {
-      const keyword = card.dataset.keyword;
-      dom.searchInput.value = keyword;
-      state.searchQuery = keyword;
-      dom.searchClear.classList.toggle('visible', true);
-      renderResults();
+      const name = card.dataset.name;
+      const full = card.dataset.full;
+      const f = factoryData.find(x => x.name === name && x.fullName === full);
+      if (f) openDetail(f);
     });
   });
+}
+
+// ==================== Tab 切换 ====================
+function switchTab(tab) {
+  state.currentTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + tab));
+  if (tab === 'recommend') renderRecommendedDetail();
+  if (tab === 'filter') renderResults();
 }
 
 // ==================== 搜索 ====================
@@ -261,8 +297,13 @@ function init() {
   renderAreas();
   renderShiftFilters();
   renderPaymentFilters();
-  renderRecommended();
+  switchTab('recommend');
   renderResults();
+
+  // Tab 切换
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+  });
 
   // 搜索输入
   dom.searchInput.addEventListener('input', (e) => handleSearch(e.target.value));

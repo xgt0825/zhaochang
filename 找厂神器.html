@@ -31,7 +31,7 @@ html { font-size:16px; -webkit-text-size-adjust:100%; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
   background: var(--bg); color: var(--text); line-height: 1.5;
-  padding-bottom: calc(16px + var(--safe-bottom));
+  padding-bottom: calc(56px + var(--safe-bottom));
   -webkit-font-smoothing: antialiased;
   user-select: none; -webkit-user-select: none;
   overflow-x: hidden;
@@ -248,6 +248,47 @@ body {
   to { opacity:1; transform:translateY(0); }
 }
 .factory-card { animation: fadeInUp 0.25s ease both; }
+
+/* ==================== Tab Bar ==================== */
+.tab-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 300;
+  display: flex; background: #fff;
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
+  padding: 4px 0 calc(4px + env(safe-area-inset-bottom, 0px));
+}
+.tab-btn {
+  flex:1; border:none; background:transparent;
+  padding:6px 0; font-size:0.75rem; font-weight:600;
+  color: var(--text-muted); cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; gap:2px;
+  -webkit-tap-highlight-color:transparent; touch-action:manipulation;
+  transition:color 0.15s;
+}
+.tab-btn .tab-icon { font-size:1.2rem; line-height:1; }
+.tab-btn.active { color: var(--primary); }
+.tab-btn:active { opacity:0.7; }
+
+/* ==================== Tab Panels ==================== */
+.tab-panel { display:none; }
+.tab-panel.active { display:block; }
+
+/* ==================== Recommend Detail Page ==================== */
+.rec-detail-grid { padding:8px 12px 80px; display:flex; flex-direction:column; gap:10px; }
+.rec-detail-card {
+  background: var(--card-bg); border-radius: var(--radius);
+  padding:14px; box-shadow:var(--shadow);
+  border:2px solid #f59e0b;
+  cursor:pointer; transition:transform 0.12s;
+  -webkit-tap-highlight-color:transparent; touch-action:manipulation;
+}
+.rec-detail-card:active { transform:scale(0.98); }
+.rec-detail-header { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+.rec-star { color:#f59e0b; font-size:0.9rem; flex-shrink:0; }
+.rec-detail-name { font-size:1rem; font-weight:700; }
+.rec-detail-info { display:grid; grid-template-columns:1fr 1fr; gap:4px 12px; font-size:0.78rem; color:var(--text-light); }
+.rec-detail-salary { margin-top:6px; font-size:0.85rem; font-weight:700; color:var(--red); }
+.rec-detail-tags { margin-top:6px; display:flex; flex-wrap:wrap; gap:4px; }
 </style>
 </head>
 <body>
@@ -257,31 +298,41 @@ body {
     <div class="header-sub">联系微信：leeheesung_</div>
   </header>
 
-  <div class="search-wrap">
-    <div class="search-bar">
-      <span class="search-icon">🔍</span>
-      <input type="search" class="search-input" id="searchInput" placeholder="搜索厂名、地区、岗位…" />
-      <button class="btn-search-clear" id="searchClear">✕</button>
+  <div class="tab-panel active" id="tab-recommend">
+    <div class="rec-detail-grid" id="recDetail">
+      <div class="empty-state"><div class="empty-icon">⭐</div><div class="empty-text">加载推荐厂区...</div></div>
     </div>
   </div>
 
-  <div class="filter-label">📍 区域</div>
-  <div class="filter-row loading-row" id="areaBar">加载中...</div>
-
-  <div class="filter-label">🕐 班次</div>
-  <div class="filter-row loading-row" id="shiftBar">加载中...</div>
-
-  <div class="filter-label">💰 结算</div>
-  <div class="filter-row loading-row" id="paymentBar">加载中...</div>
-
-  <div class="recommended-section">
-    <div class="recommended-title">⭐ 推荐厂区</div>
-    <div class="recommended-grid" id="recGrid"></div>
+  <div class="tab-panel" id="tab-filter">
+    <div class="search-wrap">
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="search" class="search-input" id="searchInput" placeholder="搜索厂名、地区、岗位…" />
+        <button class="btn-search-clear" id="searchClear">✕</button>
+      </div>
+    </div>
+    <div class="filter-label">📍 区域</div>
+    <div class="filter-row loading-row" id="areaBar">加载中...</div>
+    <div class="filter-label">🕐 班次</div>
+    <div class="filter-row loading-row" id="shiftBar">加载中...</div>
+    <div class="filter-label">💰 结算</div>
+    <div class="filter-row loading-row" id="paymentBar">加载中...</div>
+    <div class="result-count" id="resultCount"></div>
+    <div class="factory-list" id="factoryList">
+      <div class="empty-state"><div class="empty-icon">⏳</div><div class="empty-text">加载工厂数据...</div></div>
+    </div>
   </div>
 
-  <div class="result-count" id="resultCount"></div>
-  <div class="factory-list" id="factoryList">
-    <div class="empty-state"><div class="empty-icon">⏳</div><div class="empty-text">正在加载工厂数据...</div></div>
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="recommend">
+      <span class="tab-icon">⭐</span>
+      <span>推荐</span>
+    </button>
+    <button class="tab-btn" data-tab="filter">
+      <span class="tab-icon">🔍</span>
+      <span>筛选</span>
+    </button>
   </div>
 
   <div class="modal-overlay" id="modalOverlay">
@@ -1692,7 +1743,7 @@ const dom = {
   paymentBar: $('#paymentBar'),
   resultCount: $('#resultCount'),
   factoryList: $('#factoryList'),
-  recGrid: $('#recGrid'),
+  recDetail: $('#recDetail'),
   modalOverlay: $('#modalOverlay'),
   modalBody: $('#modalBody'),
   modalTitle: $('#modalTitle'),
@@ -1899,28 +1950,64 @@ function closeDetail() {
   document.body.style.overflow = '';
 }
 
-// ==================== 推荐厂区 ====================
-function renderRecommended() {
-  dom.recGrid.innerHTML = recommendedFactories.map(r => {
-    // 找匹配的工厂数量
-    const matched = factoryData.filter(f => f.name.includes(r.keyword) || f.fullName.includes(r.keyword));
+// ==================== 推荐厂区详情页 ====================
+function renderRecommendedDetail() {
+  const matched = [];
+  recommendedFactories.forEach(r => {
+    const list = factoryData.filter(f => f.name.includes(r.keyword) || f.fullName.includes(r.keyword));
+    list.forEach(f => {
+      if (!matched.some(m => m.name === f.name && m.fullName === f.fullName)) matched.push(f);
+    });
+  });
+
+  dom.recDetail.innerHTML = matched.map(f => {
+    const tags = [];
+    if (f.shift.includes('长白班')) tags.push('<span class="tag good">长白班</span>');
+    else if (f.shift.includes('两班倒')) tags.push('<span class="tag">两班倒</span>');
+    if (f.features.includes('坐班')) tags.push('<span class="tag good">坐班</span>');
+    if (f.features.includes('五险') || f.features.includes('五险一金')) tags.push('<span class="tag good">五险一金</span>');
+    if (f.features.includes('日结')) tags.push('<span class="tag warn">日结</span>');
+    if (f.features.includes('不体检')) tags.push('<span class="tag good">不体检</span>');
+    if (f.features.includes('包吃包住') || f.features.includes('厂吃厂住')) tags.push('<span class="tag">包吃住</span>');
+    if (f.features.includes('不穿无尘服')) tags.push('<span class="tag good">不穿无尘服</span>');
+
     return `
-      <div class="rec-card" data-keyword="${r.keyword}">
-        ${r.display}
-        <span class="rec-tag" style="display:block;font-size:0.58rem;font-weight:400;color:#92400e;margin-top:2px;">${matched.length} 个岗位</span>
+      <div class="rec-detail-card" data-name="${f.name}" data-full="${f.fullName}">
+        <div class="rec-detail-header">
+          <span class="rec-star">⭐</span>
+          <span class="rec-detail-name">${f.name}</span>
+          <span style="margin-left:auto;font-size:0.68rem;font-weight:600;color:var(--primary);padding:2px 10px;border-radius:10px;background:var(--primary-light);flex-shrink:0;">${f.area}</span>
+        </div>
+        <div class="rec-detail-info">
+          <span><span class="label">性别</span><span class="value">${f.gender}</span></span>
+          <span><span class="label">年龄</span><span class="value">${f.age}</span></span>
+          <span><span class="label">班次</span><span class="value">${f.shift}</span></span>
+          <span><span class="label">月薪</span><span class="value">${f.salaryRange}元</span></span>
+        </div>
+        <div class="rec-detail-salary">${f.salary}</div>
+        ${tags.length ? `<div class="rec-detail-tags">${tags.join('')}</div>` : ''}
+        ${f.remark ? `<div style="margin-top:4px;font-size:0.7rem;color:var(--text-muted);padding-top:4px;border-top:1px dashed var(--border);">${f.remark}</div>` : ''}
       </div>
     `;
   }).join('');
 
-  dom.recGrid.querySelectorAll('.rec-card').forEach(card => {
+  dom.recDetail.querySelectorAll('.rec-detail-card').forEach(card => {
     card.addEventListener('click', () => {
-      const keyword = card.dataset.keyword;
-      dom.searchInput.value = keyword;
-      state.searchQuery = keyword;
-      dom.searchClear.classList.toggle('visible', true);
-      renderResults();
+      const name = card.dataset.name;
+      const full = card.dataset.full;
+      const f = factoryData.find(x => x.name === name && x.fullName === full);
+      if (f) openDetail(f);
     });
   });
+}
+
+// ==================== Tab 切换 ====================
+function switchTab(tab) {
+  state.currentTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + tab));
+  if (tab === 'recommend') renderRecommendedDetail();
+  if (tab === 'filter') renderResults();
 }
 
 // ==================== 搜索 ====================
@@ -1935,8 +2022,13 @@ function init() {
   renderAreas();
   renderShiftFilters();
   renderPaymentFilters();
-  renderRecommended();
+  switchTab('recommend');
   renderResults();
+
+  // Tab 切换
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+  });
 
   // 搜索输入
   dom.searchInput.addEventListener('input', (e) => handleSearch(e.target.value));
