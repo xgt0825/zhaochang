@@ -7,364 +7,468 @@
 <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%E5%8D%97%E4%BA%AC%E8%99%B9%E7%A8%8B%E6%8B%9B%E5%B7%A5%22%2C%22short_name%22%3A%22%E6%8B%9B%E5%B7%A5%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22f59e0b%22%2C%22theme_color%22%3A%22f59e0b%22%7D" />
 <title>找厂神器 · 虹程人力资源</title>
 <style>
-/* ===== Reset & Base ===== */
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+/* ===== Design System ===== */
 :root {
-  --amber: #d97706;
-  --amber-light: #fbbf24;
-  --amber-bg: #fef3c7;
-  --amber-subtle: #fffbeb;
-  --primary: #d97706;
-  --primary-dark: #b45309;
-  --green: #059669;
-  --green-bg: #d1fae5;
-  --red: #dc2626;
-  --red-bg: #fee2e2;
-  --bg: #f5f5f4;
-  --card-bg: #ffffff;
-  --text: #1c1917;
-  --text-secondary: #57534e;
-  --text-muted: #a8a29e;
-  --border: #e7e5e4;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-  --shadow-md: 0 2px 8px rgba(0,0,0,0.08);
-  --radius-sm: 8px;
-  --radius-md: 12px;
+  /* Brand — warm amber/gold with depth */
+  --amber-900: #78350f;
+  --amber-800: #92400e;
+  --amber-700: #b45309;
+  --amber-600: #d97706;
+  --amber-500: #f59e0b;
+  --amber-400: #fbbf24;
+  --amber-300: #fcd34d;
+  --amber-100: #fef3c7;
+  --amber-50:  #fffbeb;
+
+  /* Neutrals — warm stone */
+  --stone-900: #1c1917;
+  --stone-800: #292524;
+  --stone-700: #44403c;
+  --stone-600: #57534e;
+  --stone-500: #78716c;
+  --stone-400: #a8a29e;
+  --stone-300: #d6d3d1;
+  --stone-200: #e7e5e4;
+  --stone-100: #f5f5f4;
+  --stone-50:  #fafaf9;
+
+  /* Semantic */
+  --red-600: #dc2626;
+  --red-50:  #fef2f2;
+  --green-600: #059669;
+  --green-50:  #ecfdf5;
+  --blue-600: #2563eb;
+  --blue-50:  #eff6ff;
+
+  /* Token mapping */
+  --color-primary: var(--amber-600);
+  --color-primary-deep: var(--amber-800);
+  --color-accent: var(--amber-500);
+  --color-bg: var(--stone-100);
+  --color-surface: #ffffff;
+  --color-text: var(--stone-900);
+  --color-text-secondary: var(--stone-600);
+  --color-text-muted: var(--stone-400);
+  --color-border: var(--stone-200);
+  --color-border-light: var(--stone-100);
+
+  /* Shadows — layered, tinted */
+  --shadow-xs: 0 1px 2px rgba(28,25,23,0.04);
+  --shadow-sm: 0 1px 3px rgba(28,25,23,0.06), 0 1px 2px rgba(28,25,23,0.04);
+  --shadow-md: 0 4px 12px rgba(28,25,23,0.08), 0 2px 4px rgba(28,25,23,0.04);
+  --shadow-lg: 0 8px 30px rgba(28,25,23,0.10), 0 4px 8px rgba(28,25,23,0.04);
+  --shadow-xl: 0 20px 60px rgba(28,25,23,0.14), 0 8px 20px rgba(28,25,23,0.06);
+
+  /* Radii */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
   --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+
+  /* Easing */
+  --ease-out-expo: cubic-bezier(0.16,1,0.3,1);
+  --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+
+  /* Safe area */
   --safe-bottom: env(safe-area-inset-bottom,0px);
+  --safe-top: env(safe-area-inset-top,0px);
 }
-html{font-size:16px;-webkit-text-size-adjust:100%}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{font-size:16px;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
 body{
   font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
-  background:var(--bg);color:var(--text);line-height:1.5;
-  padding-bottom:calc(16px + var(--safe-bottom));
+  background:var(--color-bg);color:var(--color-text);line-height:1.6;
+  padding-bottom:calc(20px + var(--safe-bottom));
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
   overflow-x:hidden;
 }
 
-/* ===== Header ===== */
+/* ===== Header — layered depth ===== */
 .header{
-  background:linear-gradient(135deg,#b45309,#d97706,#f59e0b);
-  position:relative;overflow:hidden;
+  position:relative;
+  background:linear-gradient(165deg,var(--amber-900) 0%,var(--amber-700) 40%,var(--amber-600) 100%);
+  overflow:hidden;
 }
-.header::after{
+.header::before{
   content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 60% 80% at 20% -20%,rgba(255,255,255,0.2),transparent 60%);
+  background:
+    radial-gradient(ellipse 100% 70% at 0% 100%,rgba(251,191,36,0.15),transparent 60%),
+    radial-gradient(ellipse 60% 50% at 100% 0%,rgba(255,255,255,0.10),transparent 50%);
   pointer-events:none;
 }
+.header::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.20),transparent);
+}
 .header-title{
-  font-size:1.15rem;font-weight:800;letter-spacing:3px;
-  color:#fff;text-align:center;padding:14px 16px 10px;
-  position:relative;z-index:1;
+  font-size:1.08rem;font-weight:800;letter-spacing:4px;
+  color:#fff;text-align:center;
+  padding:16px 20px 12px;position:relative;z-index:1;
+  text-shadow:0 1px 2px rgba(0,0,0,0.10);
 }
 
-/* ===== WeChat Bar ===== */
+/* ===== WeChat Bar — glassmorphism ===== */
 .wechat-bar{
   position:sticky;top:0;z-index:102;
-  background:linear-gradient(135deg,#92400e,#b45309);
-  display:flex;align-items:center;justify-content:center;gap:8px;
+  background:linear-gradient(135deg,rgba(146,64,14,0.97),rgba(180,83,9,0.97));
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:center;gap:6px;
   padding:10px 16px;user-select:text;-webkit-user-select:text;
-  box-shadow:0 2px 4px rgba(0,0,0,0.1);
+  box-shadow:0 2px 12px rgba(120,53,15,0.20);
 }
-.wechat-bar .label{
-  font-size:0.78rem;color:rgba(255,255,255,0.85);font-weight:500;
-}
+.wechat-bar .label{font-size:0.75rem;color:rgba(255,255,255,0.70);font-weight:500}
 .wechat-bar .wechat-id{
-  font-size:0.88rem;color:#fff;font-weight:700;letter-spacing:0.5px;
+  font-size:0.88rem;color:#fff;font-weight:700;letter-spacing:0.8px;
+  padding:0 2px;
 }
 .wechat-bar .copy-badge{
-  font-size:0.6rem;font-weight:600;color:#92400e;
-  background:var(--amber-light);padding:2px 8px;border-radius:6px;
-  margin-left:2px;animation:pulse-badge 2s ease-in-out infinite;
+  font-size:0.58rem;font-weight:600;color:var(--amber-800);
+  background:linear-gradient(135deg,var(--amber-400),var(--amber-300));
+  padding:2px 8px;border-radius:var(--radius-xs);margin-left:2px;
+  animation:pulse-soft 2.5s ease-in-out infinite;
 }
-@keyframes pulse-badge{0%,100%{opacity:1}50%{opacity:0.7}}
-.wechat-bar .copy-badge.copied{background:var(--green-bg);color:#065f46;animation:none}
+@keyframes pulse-soft{0%,100%{opacity:1}50%{opacity:0.65}}
+.wechat-bar .copy-badge.copied{background:var(--green-50);color:var(--green-600);animation:none}
 .wechat-bar .copy-btn{
-  font-size:0.7rem;font-weight:600;color:#fff;
-  background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);
-  padding:3px 12px;border-radius:14px;cursor:pointer;
-  transition:all 0.15s;touch-action:manipulation;
+  font-size:0.65rem;font-weight:600;color:#fff;
+  background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.20);
+  padding:3px 10px;border-radius:var(--radius-full);cursor:pointer;
+  transition:all 0.2s var(--ease-out-expo);touch-action:manipulation;
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
 }
-.wechat-bar .copy-btn:active{transform:scale(0.95);background:rgba(255,255,255,0.3)}
+.wechat-bar .copy-btn:active{transform:scale(0.92);background:rgba(255,255,255,0.22)}
 
 /* ===== Tab Bar ===== */
 .tab-bar{
-  position:sticky;top:42px;z-index:101;
-  display:flex;background:#fff;padding:0 0 0;
-  box-shadow:0 1px 0 var(--border),0 2px 4px rgba(0,0,0,0.03);
+  position:sticky;top:40px;z-index:101;
+  display:flex;background:rgba(255,255,255,0.85);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--color-border-light);
 }
 .tab-btn{
   flex:1;border:none;background:transparent;
-  padding:10px 0 8px;font-size:0.82rem;font-weight:600;
-  color:var(--text-muted);cursor:pointer;
-  display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:12px 0 10px;font-size:0.82rem;font-weight:600;
+  color:var(--color-text-muted);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
   -webkit-tap-highlight-color:transparent;touch-action:manipulation;
-  transition:color 0.2s;position:relative;
+  transition:color 0.25s var(--ease-out-expo);position:relative;
 }
-.tab-btn .tab-icon{font-size:1.1rem;line-height:1}
-.tab-btn.active{color:var(--primary)}
+.tab-btn .tab-icon{font-size:1.05rem;line-height:1;opacity:0.7;transition:opacity 0.25s}
+.tab-btn.active{color:var(--color-primary)}
+.tab-btn.active .tab-icon{opacity:1}
 .tab-btn.active::after{
-  content:'';position:absolute;bottom:0;left:25%;right:25%;
-  height:2.5px;background:var(--primary);border-radius:2px 2px 0 0;
+  content:'';position:absolute;bottom:0;left:28%;right:28%;
+  height:2.5px;background:linear-gradient(90deg,var(--amber-400),var(--amber-600));
+  border-radius:2px 2px 0 0;
 }
-.tab-btn:active{opacity:0.7}
+.tab-btn:active{opacity:0.6}
 .tab-panel{display:none}
 .tab-panel.active{display:block}
 
 /* ===== Search ===== */
 .search-wrap{
   position:sticky;top:96px;z-index:99;
-  background:var(--bg);padding:10px 12px 8px;
+  background:var(--color-bg);padding:12px 16px 10px;
 }
 .search-bar{
-  display:flex;align-items:center;gap:8px;
-  background:var(--card-bg);border-radius:24px;
-  padding:9px 16px;box-shadow:var(--shadow-sm);
-  border:1.5px solid transparent;transition:border-color 0.2s,box-shadow 0.2s;
+  display:flex;align-items:center;gap:10px;
+  background:var(--color-surface);border-radius:var(--radius-xl);
+  padding:10px 18px;
+  box-shadow:var(--shadow-xs);
+  border:1.5px solid var(--color-border-light);
+  transition:border-color 0.25s var(--ease-out-expo),box-shadow 0.25s var(--ease-out-expo);
 }
 .search-bar:focus-within{
-  border-color:var(--amber-light);box-shadow:0 0 0 3px rgba(217,119,6,0.1),var(--shadow-sm);
+  border-color:var(--amber-300);
+  box-shadow:0 0 0 4px rgba(217,119,6,0.08),var(--shadow-sm);
 }
-.search-icon{font-size:1rem;flex-shrink:0;opacity:0.45}
+.search-icon{font-size:0.95rem;flex-shrink:0;opacity:0.35;transition:opacity 0.25s}
+.search-bar:focus-within .search-icon{opacity:0.55}
 .search-input{
   flex:1;border:none;outline:none;font-size:0.88rem;
-  color:var(--text);background:transparent;-webkit-appearance:none;
+  color:var(--color-text);background:transparent;-webkit-appearance:none;
 }
-.search-input::placeholder{color:var(--text-muted)}
+.search-input::placeholder{color:var(--color-text-muted)}
 .btn-search-clear{
-  width:22px;height:22px;border-radius:50%;
-  border:none;background:var(--border);color:var(--text-secondary);
-  font-size:0.72rem;cursor:pointer;display:none;
+  width:24px;height:24px;border-radius:50%;
+  border:none;background:var(--color-border);color:var(--color-text-secondary);
+  font-size:0.7rem;cursor:pointer;display:none;
   align-items:center;justify-content:center;
+  transition:background 0.15s;
 }
+.btn-search-clear:active{background:var(--stone-300)}
 .btn-search-clear.visible{display:flex}
 
 /* ===== Filter ===== */
-.filter-section{padding:0 12px}
-.filter-group{margin-bottom:4px}
+.filter-section{padding:0 16px}
+.filter-group{margin-bottom:2px}
 .filter-label{
-  font-size:0.68rem;font-weight:600;color:var(--text-muted);
-  padding:8px 4px 5px;letter-spacing:0.3px;
+  font-size:0.65rem;font-weight:600;color:var(--color-text-muted);
+  padding:10px 4px 6px;letter-spacing:0.5px;text-transform:uppercase;
 }
 .filter-row{
   display:flex;gap:6px;overflow-x:auto;
-  -webkit-overflow-scrolling:touch;scrollbar-width:none;
-  padding-bottom:4px;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px;
 }
 .filter-row::-webkit-scrollbar{display:none}
 .filter-chip{
-  flex-shrink:0;padding:5px 14px;border-radius:16px;
-  border:1.5px solid var(--border);background:var(--card-bg);
-  font-size:0.76rem;color:var(--text-secondary);
-  cursor:pointer;transition:all 0.15s;
+  flex-shrink:0;padding:6px 16px;border-radius:var(--radius-full);
+  border:1.5px solid var(--color-border);background:var(--color-surface);
+  font-size:0.76rem;color:var(--color-text-secondary);
+  cursor:pointer;transition:all 0.2s var(--ease-out-expo);
   -webkit-tap-highlight-color:transparent;touch-action:manipulation;
 }
-.filter-chip:active{transform:scale(0.95)}
+.filter-chip:active{transform:scale(0.94)}
 .filter-chip.active{
-  background:var(--primary);color:#fff;border-color:var(--primary);font-weight:600;
-  box-shadow:0 1px 4px rgba(217,119,6,0.25);
+  background:linear-gradient(135deg,var(--amber-600),var(--amber-500));
+  color:#fff;border-color:var(--amber-500);
+  box-shadow:0 2px 8px rgba(217,119,6,0.25);
+  font-weight:600;
 }
 
 /* ===== Result Count ===== */
 .result-count{
-  padding:10px 16px 4px;font-size:0.72rem;color:var(--text-muted);font-weight:500;
+  padding:12px 16px 6px;font-size:0.7rem;color:var(--color-text-muted);
+  font-weight:500;letter-spacing:0.3px;
 }
 
 /* ===== Factory Cards ===== */
-.factory-list{padding:0 12px 16px;display:flex;flex-direction:column;gap:10px}
+.factory-list{padding:0 16px 20px;display:flex;flex-direction:column;gap:12px}
 
 .factory-card{
-  background:var(--card-bg);border-radius:var(--radius-md);
-  padding:14px 14px 12px;box-shadow:var(--shadow-sm);
-  transition:transform 0.12s,box-shadow 0.2s;
-  cursor:pointer;border:1px solid var(--border);
+  position:relative;
+  background:var(--color-surface);border-radius:var(--radius-md);
+  padding:18px 16px 14px;
+  box-shadow:var(--shadow-xs);
+  transition:transform 0.2s var(--ease-out-expo),box-shadow 0.25s var(--ease-out-expo);
+  cursor:pointer;
   -webkit-tap-highlight-color:transparent;
+  overflow:hidden;
 }
-.factory-card:active{transform:scale(0.98)}
+.factory-card::before{
+  content:'';position:absolute;top:0;left:0;width:3px;height:100%;
+  background:linear-gradient(180deg,var(--amber-400),var(--amber-600));
+  border-radius:0 2px 2px 0;
+}
+.factory-card:active{transform:scale(0.97);box-shadow:var(--shadow-sm)}
 .factory-card:hover{box-shadow:var(--shadow-md)}
 
 .card-header{
-  display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:7px;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px;
 }
 .card-title{
-  font-size:0.95rem;font-weight:700;line-height:1.3;color:var(--text);
+  font-size:1rem;font-weight:700;line-height:1.35;color:var(--color-text);
+  letter-spacing:-0.01em;
 }
 .card-area{
-  flex-shrink:0;font-size:0.65rem;font-weight:600;
-  padding:2px 10px;border-radius:10px;
-  background:var(--amber-subtle);color:var(--amber);
-  border:1px solid var(--amber-bg);
+  flex-shrink:0;font-size:0.62rem;font-weight:600;
+  padding:3px 10px;border-radius:var(--radius-full);
+  background:var(--amber-50);color:var(--amber-700);
+  border:1px solid var(--amber-100);
+  letter-spacing:0.3px;margin-top:1px;
 }
-.card-area.high-area{background:#eef2ff;color:#4338ca;border-color:#c7d2fe}
 
 .card-info-grid{
-  display:grid;grid-template-columns:1fr 1fr;gap:3px 12px;
-  font-size:0.75rem;color:var(--text-secondary);
+  display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;
+  font-size:0.75rem;color:var(--color-text-secondary);
+  background:var(--stone-50);border-radius:var(--radius-xs);
+  padding:8px 12px;margin-bottom:10px;
 }
-.card-info-grid span{display:flex;align-items:center;gap:4px}
-.card-info-grid .label{color:var(--text-muted);font-size:0.68rem}
-.card-info-grid .value{font-weight:500;color:var(--text)}
+.card-info-grid span{display:flex;align-items:center;gap:5px}
+.card-info-grid .label{color:var(--color-text-muted);font-size:0.68rem;min-width:2em}
+.card-info-grid .value{font-weight:500;color:var(--color-text)}
 
 .card-salary{
-  margin-top:7px;padding:6px 10px;
-  background:#fef2f2;border-radius:var(--radius-sm);
-  font-size:0.81rem;font-weight:700;color:var(--red);
-  line-height:1.4;
+  padding:8px 12px;
+  background:linear-gradient(135deg,var(--red-50),#fff);
+  border:1px solid rgba(220,38,38,0.08);
+  border-radius:var(--radius-xs);
+  font-size:0.8rem;font-weight:700;color:var(--red-600);
+  line-height:1.45;margin-bottom:8px;
 }
 
 .card-tags{
-  margin-top:6px;display:flex;flex-wrap:wrap;gap:4px;
+  display:flex;flex-wrap:wrap;gap:5px;
 }
 .tag{
-  font-size:0.64rem;padding:2px 8px;border-radius:8px;
-  font-weight:500;white-space:nowrap;line-height:1.5;
+  font-size:0.62rem;padding:3px 9px;border-radius:var(--radius-xs);
+  font-weight:500;white-space:nowrap;line-height:1.4;
+  transition:all 0.15s;
 }
-.tag.blue{background:#dbeafe;color:#1d4ed8}
-.tag.green{background:var(--green-bg);color:#065f46}
-.tag.amber{background:var(--amber-bg);color:#92400e}
-.tag.red{background:var(--red-bg);color:#991b1b}
+.tag.blue{background:var(--blue-50);color:var(--blue-600)}
+.tag.green{background:var(--green-50);color:var(--green-600)}
+.tag.amber{background:var(--amber-100);color:var(--amber-800)}
+.tag.red{background:var(--red-50);color:var(--red-600)}
 
 .card-features{
-  margin-top:5px;font-size:0.68rem;color:var(--text-muted);
-  display:flex;align-items:center;gap:4px;
-  border-top:1px dashed var(--border);padding-top:5px;
+  margin-top:8px;font-size:0.67rem;color:var(--color-text-muted);
+  display:flex;align-items:center;gap:5px;
+  border-top:1px dashed var(--color-border);padding-top:8px;
+  line-height:1.5;
 }
 
-/* ===== Recommend Tab ===== */
-.quick-pick{
-  padding:10px 12px 4px;
-}
+/* ===== Quick Pick ===== */
+.quick-pick{padding:12px 16px 6px}
 .quick-pick-title{
-  font-size:0.72rem;font-weight:600;color:var(--text-muted);
-  padding:0 4px 8px;letter-spacing:0.3px;
+  font-size:0.68rem;font-weight:600;color:var(--color-text-muted);
+  padding:0 4px 10px;letter-spacing:0.5px;
 }
 .quick-pick-row{
   display:flex;gap:8px;overflow-x:auto;
-  -webkit-overflow-scrolling:touch;scrollbar-width:none;
-  padding-bottom:6px;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:6px;
 }
 .quick-pick-row::-webkit-scrollbar{display:none}
 .quick-pick-item{
-  flex-shrink:0;padding:8px 14px;
-  background:#fff;border:1.5px solid var(--amber-light);
-  border-radius:20px;white-space:nowrap;
-  font-size:0.78rem;font-weight:700;color:var(--amber);
-  cursor:pointer;transition:all 0.15s;
+  flex-shrink:0;padding:8px 18px;
+  background:var(--color-surface);border:1.5px solid var(--amber-200);
+  border-radius:var(--radius-full);white-space:nowrap;
+  font-size:0.76rem;font-weight:600;color:var(--amber-700);
+  cursor:pointer;transition:all 0.2s var(--ease-out-expo);
   -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+  box-shadow:var(--shadow-xs);
 }
-.quick-pick-item:active{transform:scale(0.95);background:var(--amber-subtle)}
+.quick-pick-item:active{transform:scale(0.94);background:var(--amber-50);border-color:var(--amber-400)}
 
-.rec-section{
-  padding:4px 12px 80px;
-}
+/* ===== Recommend Tab ===== */
+.rec-section{padding:6px 16px 80px}
 .rec-section-title{
-  font-size:0.85rem;font-weight:700;color:var(--text);
-  padding:10px 4px 6px;display:flex;align-items:center;gap:6px;
+  font-size:0.82rem;font-weight:700;color:var(--color-text);
+  padding:10px 4px 8px;display:flex;align-items:center;gap:6px;
 }
 
 .rec-card{
-  background:var(--card-bg);border-radius:var(--radius-md);
-  padding:14px;box-shadow:var(--shadow-sm);margin-bottom:10px;
-  border:1px solid var(--border);
-  border-left:3px solid var(--amber-light);
-  cursor:pointer;transition:transform 0.12s;
+  position:relative;
+  background:var(--color-surface);border-radius:var(--radius-md);
+  padding:18px 16px 14px;box-shadow:var(--shadow-xs);margin-bottom:12px;
+  border:1px solid var(--color-border-light);
+  cursor:pointer;transition:transform 0.2s var(--ease-out-expo),box-shadow 0.25s;
   -webkit-tap-highlight-color:transparent;touch-action:manipulation;
 }
-.rec-card:active{transform:scale(0.98)}
-.rec-card-header{display:flex;align-items:center;gap:8px;margin-bottom:7px}
-.rec-card-star{color:var(--amber-light);font-size:0.85rem;flex-shrink:0}
-.rec-card-name{font-size:0.95rem;font-weight:700}
+.rec-card::before{
+  content:'';position:absolute;top:0;left:0;width:3px;height:100%;
+  background:linear-gradient(180deg,var(--amber-400),var(--amber-500));
+  border-radius:0 2px 2px 0;
+}
+.rec-card:active{transform:scale(0.97)}
+.rec-card-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.rec-card-star{
+  color:var(--amber-400);font-size:0.85rem;flex-shrink:0;
+  filter:drop-shadow(0 1px 2px rgba(217,119,6,0.15));
+}
+.rec-card-name{font-size:1rem;font-weight:700}
 .rec-card-area{
-  margin-left:auto;font-size:0.65rem;font-weight:600;
-  padding:2px 10px;border-radius:10px;
-  background:var(--amber-subtle);color:var(--amber);border:1px solid var(--amber-bg);
-  flex-shrink:0;
+  margin-left:auto;font-size:0.62rem;font-weight:600;
+  padding:3px 10px;border-radius:var(--radius-full);
+  background:var(--amber-50);color:var(--amber-700);border:1px solid var(--amber-100);
+  flex-shrink:0;letter-spacing:0.3px;
 }
 .rec-card-info{
-  display:grid;grid-template-columns:1fr 1fr;gap:3px 12px;
-  font-size:0.75rem;color:var(--text-secondary);
+  display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;
+  font-size:0.75rem;color:var(--color-text-secondary);
+  background:var(--stone-50);border-radius:var(--radius-xs);
+  padding:8px 12px;margin-bottom:10px;
 }
-.rec-card-info span{display:flex;align-items:center;gap:4px}
-.rec-card-info .label{color:var(--text-muted);font-size:0.68rem}
-.rec-card-info .value{font-weight:500;color:var(--text)}
+.rec-card-info span{display:flex;align-items:center;gap:5px}
+.rec-card-info .label{color:var(--color-text-muted);font-size:0.68rem;min-width:2em}
+.rec-card-info .value{font-weight:500;color:var(--color-text)}
 .rec-card-salary{
-  margin-top:7px;padding:6px 10px;
-  background:#fef2f2;border-radius:var(--radius-sm);
-  font-size:0.81rem;font-weight:700;color:var(--red);line-height:1.4;
+  padding:8px 12px;
+  background:linear-gradient(135deg,var(--red-50),#fff);
+  border:1px solid rgba(220,38,38,0.08);
+  border-radius:var(--radius-xs);
+  font-size:0.8rem;font-weight:700;color:var(--red-600);line-height:1.45;margin-bottom:8px;
 }
-.rec-card-tags{margin-top:6px;display:flex;flex-wrap:wrap;gap:4px}
+.rec-card-tags{display:flex;flex-wrap:wrap;gap:5px}
 
 /* ===== Detail Modal ===== */
 .modal-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:400;
+  position:fixed;inset:0;z-index:400;
   display:flex;align-items:flex-end;justify-content:center;
-  opacity:0;visibility:hidden;transition:opacity 0.25s ease;
+  opacity:0;visibility:hidden;
+  transition:opacity 0.35s ease,visibility 0.35s;
+}
+.modal-overlay::before{
+  content:'';position:absolute;inset:0;
+  background:rgba(28,25,23,0.45);
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
 }
 .modal-overlay.open{opacity:1;visibility:visible}
+
 .modal-sheet{
-  background:var(--card-bg);border-radius:var(--radius-lg) var(--radius-lg) 0 0;
-  width:100%;max-width:500px;max-height:82vh;
+  position:relative;z-index:1;
+  background:var(--color-surface);border-radius:var(--radius-lg) var(--radius-lg) 0 0;
+  width:100%;max-width:500px;max-height:85vh;
   display:flex;flex-direction:column;
   transform:translateY(100%);
-  transition:transform 0.35s cubic-bezier(0.22,1,0.36,1);
+  transition:transform 0.4s var(--ease-spring);
   padding-bottom:var(--safe-bottom);
+  box-shadow:0 -8px 40px rgba(28,25,23,0.12);
 }
 .modal-overlay.open .modal-sheet{transform:translateY(0)}
-.modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:10px auto;flex-shrink:0}
+
+.modal-handle{
+  width:36px;height:4px;background:var(--color-border);
+  border-radius:2px;margin:10px auto;flex-shrink:0;
+}
 .modal-header{
   display:flex;align-items:center;justify-content:space-between;
-  padding:4px 20px 10px;flex-shrink:0;
+  padding:4px 24px 12px;flex-shrink:0;
 }
-.modal-title{font-size:1.05rem;font-weight:700;color:var(--text)}
+.modal-title{font-size:1.1rem;font-weight:700;color:var(--color-text)}
 .btn-modal-close{
-  width:30px;height:30px;border-radius:50%;border:none;
-  background:#f5f5f4;font-size:1rem;cursor:pointer;
+  width:32px;height:32px;border-radius:50%;border:none;
+  background:var(--stone-100);font-size:0.95rem;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
-  color:var(--text-secondary);transition:background 0.15s;
+  color:var(--color-text-secondary);transition:all 0.15s;
 }
-.btn-modal-close:active{background:#e7e5e4}
-.modal-body{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 20px 20px;flex:1}
+.btn-modal-close:active{background:var(--stone-200);transform:scale(0.92)}
+.modal-body{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 24px 24px;flex:1}
 
 .modal-detail-grid{display:flex;flex-direction:column;gap:0}
-.detail-block{
-  padding:12px 0;
-}
-.detail-block+.detail-block{border-top:1px solid var(--border)}
+.detail-block{padding:14px 0}
+.detail-block+.detail-block{border-top:1px solid var(--color-border)}
 .detail-block-title{
-  font-size:0.7rem;font-weight:600;color:var(--text-muted);
-  letter-spacing:0.3px;margin-bottom:8px;
+  font-size:0.68rem;font-weight:600;color:var(--color-text-muted);
+  letter-spacing:0.5px;margin-bottom:10px;text-transform:uppercase;
 }
 .detail-row{
-  display:grid;grid-template-columns:60px 1fr;gap:6px 10px;font-size:0.84rem;
+  display:grid;grid-template-columns:64px 1fr;gap:8px 12px;font-size:0.84rem;
 }
-.detail-row dt{color:var(--text-muted);font-weight:500}
-.detail-row dd{color:var(--text)}
-.modal-body .highlight-row{color:var(--red);font-weight:600}
+.detail-row dt{color:var(--color-text-muted);font-weight:500}
+.detail-row dd{color:var(--color-text)}
+.detail-row .highlight{color:var(--red-600);font-weight:600}
 .modal-body .detail-remark{
-  font-size:0.78rem;color:var(--text-secondary);line-height:1.6;
+  font-size:0.8rem;color:var(--color-text-secondary);line-height:1.7;
+  background:var(--stone-50);border-radius:var(--radius-xs);
+  padding:10px 12px;
 }
+.modal-body .detail-remark.danger{background:var(--red-50);color:var(--red-600)}
 
 /* ===== Empty State ===== */
 .empty-state{
-  text-align:center;padding:48px 20px;color:var(--text-muted);
+  text-align:center;padding:56px 20px;color:var(--color-text-muted);
 }
-.empty-state .empty-icon{font-size:2.8rem;margin-bottom:10px;display:block}
-.empty-state .empty-text{font-size:0.88rem;color:var(--text-secondary)}
+.empty-state .empty-icon{font-size:2.5rem;margin-bottom:12px;display:block;opacity:0.6}
+.empty-state .empty-text{font-size:0.85rem;color:var(--color-text-secondary)}
 
 /* ===== Loading ===== */
-.loading-skeleton{text-align:center;padding:20px;color:var(--text-muted);font-size:0.82rem}
+.loading-skeleton{text-align:center;padding:20px;color:var(--color-text-muted);font-size:0.8rem}
 
-/* ===== Animation ===== */
-@keyframes fadeInUp{
-  from{opacity:0;transform:translateY(8px)}
+/* ===== Animations ===== */
+@keyframes fadeSlideUp{
+  from{opacity:0;transform:translateY(12px)}
   to{opacity:1;transform:translateY(0)}
 }
-.factory-card,.rec-card{animation:fadeInUp 0.25s ease both}
+.factory-card,.rec-card{animation:fadeSlideUp 0.35s var(--ease-out-expo) both}
 
 /* ===== Responsive ===== */
 @media(min-width:768px){
-  body{max-width:600px;margin:0 auto;box-shadow:0 0 30px rgba(0,0,0,0.05);min-height:100vh}
-  .factory-list{gap:12px;padding:0 16px 16px}
+  body{max-width:600px;margin:0 auto;box-shadow:0 0 40px rgba(28,25,23,0.06);min-height:100vh}
+  .factory-list{gap:14px;padding:0 20px 24px}
+  .filter-section,.quick-pick,.search-wrap{padding-left:20px;padding-right:20px}
 }
 </style>
 </head>
@@ -440,7 +544,6 @@ body{
 </div>
 
 <script>
-// ==================== 工厂招聘数据 ====================
 const factoryData = [
   {
     "name": "通淮街汽配厂",
@@ -1810,11 +1913,11 @@ const factoryData = [
     "requirements": "机加工需有机加工经验; 装配工大专毕业, 大件装配上下料; 女工需搬得动35斤工件, 能倒夜班; 不要短期工, 工期3个月及以上",
     "remark": "生产汽车精密轴承及零部件, 12:30厂门口接（东北门）"
   }
-];
+]
 
-const areas = ['全部', '江宁', '秦淮', '浦口', '栖霞', '溧水', '雨花', '六合', '丹阳', '高淳', '滁州'];
-const shiftFilters = ['全部', '长白班', '两班倒', '长白班为主'];
-const paymentFilters = ['全部', '日结', '月结', '周结'];
+const areas = ['全部', '江宁', '秦淮', '浦口', '栖霞', '溧水', '雨花', '六合', '丹阳', '高淳', '滁州']
+const shiftFilters = ['全部', '长白班', '两班倒', '长白班为主']
+const paymentFilters = ['全部', '日结', '月结', '周结']
 
 const recommendedKeywords = [
   {display:'白象',keyword:'白象'},
@@ -1829,18 +1932,12 @@ const recommendedKeywords = [
   {display:'华玻',keyword:'华玻'},
 ];
 
-// ==================== 状态 ====================
+// ==================== State ====================
 const state = {
-  searchQuery:'',
-  areaFilter:'全部',
-  shiftFilter:'全部',
-  paymentFilter:'全部',
-  currentTab:'recommend',
+  searchQuery:'',areaFilter:'全部',shiftFilter:'全部',paymentFilter:'全部',currentTab:'recommend',
 };
-
 const $=s=>document.querySelector(s);
 const $$=s=>document.querySelectorAll(s);
-
 const dom = {
   searchInput:$('#searchInput'),searchClear:$('#searchClear'),
   areaBar:$('#areaBar'),shiftBar:$('#shiftBar'),paymentBar:$('#paymentBar'),
@@ -1851,7 +1948,6 @@ const dom = {
   copyBtn:$('#copyBtn'),copyBadge:$('#copyBadge'),wechatId:$('#wechatId'),
 };
 
-// ==================== 工具函数 ====================
 function getTags(f){
   const t=[];
   if(f.shift.includes('长白班')) t.push('<span class="tag green">长白班</span>');
@@ -1869,7 +1965,6 @@ function getTags(f){
   return t.join('');
 }
 
-// ==================== 筛选 ====================
 function getFilteredData(){
   let data=factoryData;
   if(state.areaFilter!=='全部') data=data.filter(f=>f.area===state.areaFilter);
@@ -1882,35 +1977,21 @@ function getFilteredData(){
 
 function renderFilters(bar,items,key,cls){
   bar.innerHTML=items.map(i=>`<button class="filter-chip${i===state[key]?' active':''}" data-${cls}="${i}">${i}</button>`).join('');
-  bar.querySelectorAll(`[data-${cls}]`).forEach(chip=>{
-    chip.addEventListener('click',()=>{
-      state[key]=chip.dataset[cls];
-      renderAreas();
-      renderShiftFilters();
-      renderPaymentFilters();
-      renderResults();
-    });
-  });
+  bar.querySelectorAll(`[data-${cls}]`).forEach(chip=>{chip.addEventListener('click',()=>{state[key]=chip.dataset[cls];renderAreas();renderShiftFilters();renderPaymentFilters();renderResults()})});
 }
-
 function renderAreas(){renderFilters(dom.areaBar,areas,'areaFilter','area')}
 function renderShiftFilters(){renderFilters(dom.shiftBar,shiftFilters,'shiftFilter','shift')}
 function renderPaymentFilters(){renderFilters(dom.paymentBar,paymentFilters,'paymentFilter','pay')}
 
-// ==================== 渲染卡片 ====================
 function renderResults(){
   const data=getFilteredData();
   dom.resultCount.textContent=`共 ${data.length} 家工厂`;
-  if(data.length===0){
-    dom.factoryList.innerHTML=`<div class="empty-state"><span class="empty-icon">🔍</span><div class="empty-text">没有找到匹配的工厂，试试调整筛选条件</div></div>`;
-    return;
-  }
-  dom.factoryList.innerHTML=data.map((f,i)=>{
-    const areaClass=f.area==='江宁'?'high-area':'';
-    return `<div class="factory-card" data-id="${i}" style="animation-delay:${i*0.03}s">
+  if(data.length===0){dom.factoryList.innerHTML=`<div class="empty-state"><span class="empty-icon">🔍</span><div class="empty-text">没有找到匹配的工厂，试试调整筛选条件</div></div>`;return}
+  dom.factoryList.innerHTML=data.map((f,i)=>`
+    <div class="factory-card" data-id="${i}" style="animation-delay:${i*0.025}s">
       <div class="card-header">
         <div class="card-title">${f.name}</div>
-        <div class="card-area ${areaClass}">${f.area}</div>
+        <div class="card-area">${f.area}</div>
       </div>
       <div class="card-info-grid">
         <span><span class="label">性别</span><span class="value">${f.gender}</span></span>
@@ -1921,47 +2002,27 @@ function renderResults(){
       <div class="card-salary">${f.salary}</div>
       <div class="card-tags">${getTags(f)}</div>
       ${f.features?`<div class="card-features">🏷️ ${f.features.split(',').slice(0,3).join(' · ')}</div>`:''}
-    </div>`;
-  }).join('');
-  dom.factoryList.querySelectorAll('.factory-card').forEach(card=>{
-    card.addEventListener('click',()=>openDetail(getFilteredData()[parseInt(card.dataset.id)]));
-  });
+    </div>
+  `).join('');
+  dom.factoryList.querySelectorAll('.factory-card').forEach(card=>{card.addEventListener('click',()=>openDetail(getFilteredData()[parseInt(card.dataset.id)]))});
 }
 
-// ==================== Quick Pick ====================
 function renderQuickPick(){
   dom.quickPick.innerHTML=`
     <div class="quick-pick-title">⚡ 快速筛选</div>
-    <div class="quick-pick-row">
-      ${recommendedKeywords.map(k=>`<button class="quick-pick-item" data-keyword="${k.keyword}">${k.display}</button>`).join('')}
-    </div>
-    <div class="quick-pick-row" style="margin-top:4px">
-      ${areas.filter(a=>a!=='全部').map(a=>`<button class="quick-pick-item" data-area="${a}">📍 ${a}</button>`).join('')}
-    </div>
-  `;
+    <div class="quick-pick-row">${recommendedKeywords.map(k=>`<button class="quick-pick-item" data-keyword="${k.keyword}">${k.display}</button>`).join('')}</div>
+    <div class="quick-pick-row" style="margin-top:4px">${areas.filter(a=>a!=='全部').map(a=>`<button class="quick-pick-item" data-area="${a}">📍 ${a}</button>`).join('')}</div>`;
   dom.quickPick.querySelectorAll('.quick-pick-item').forEach(item=>{
     item.addEventListener('click',()=>{
-      if(item.dataset.keyword){
-        dom.searchInput.value=item.dataset.keyword;
-        state.searchQuery=item.dataset.keyword;
-        dom.searchClear.classList.toggle('visible',true);
-        switchTab('filter');
-      }else if(item.dataset.area){
-        state.areaFilter=item.dataset.area;
-        switchTab('filter');
-      }
+      if(item.dataset.keyword){dom.searchInput.value=item.dataset.keyword;state.searchQuery=item.dataset.keyword;dom.searchClear.classList.toggle('visible',true);switchTab('filter')}
+      else if(item.dataset.area){state.areaFilter=item.dataset.area;switchTab('filter')}
     });
   });
 }
 
-// ==================== 推荐页 ====================
 function renderRecommendedDetail(){
   const matched=[];
-  recommendedKeywords.forEach(r=>{
-    factoryData.filter(f=>f.name.includes(r.keyword)||f.fullName.includes(r.keyword)).forEach(f=>{
-      if(!matched.some(m=>m.name===f.name&&m.fullName===f.fullName)) matched.push(f);
-    });
-  });
+  recommendedKeywords.forEach(r=>{factoryData.filter(f=>f.name.includes(r.keyword)||f.fullName.includes(r.keyword)).forEach(f=>{if(!matched.some(m=>m.name===f.name&&m.fullName===f.fullName))matched.push(f)})});
   dom.recList.innerHTML=matched.map(f=>`
     <div class="rec-card" data-name="${f.name}" data-full="${f.fullName}">
       <div class="rec-card-header">
@@ -1977,71 +2038,46 @@ function renderRecommendedDetail(){
       </div>
       <div class="rec-card-salary">${f.salary}</div>
       <div class="rec-card-tags">${getTags(f)}</div>
-      ${f.remark?`<div style="margin-top:5px;font-size:0.68rem;color:var(--text-muted);padding-top:5px;border-top:1px dashed var(--border)">${f.remark}</div>`:''}
+      ${f.remark?`<div style="margin-top:6px;font-size:0.67rem;color:var(--color-text-muted);padding-top:6px;border-top:1px dashed var(--color-border)">${f.remark}</div>`:''}
     </div>
   `).join('');
-  dom.recList.querySelectorAll('.rec-card').forEach(card=>{
-    card.addEventListener('click',()=>{
-      const f=factoryData.find(x=>x.name===card.dataset.name&&x.fullName===card.dataset.full);
-      if(f) openDetail(f);
-    });
-  });
+  dom.recList.querySelectorAll('.rec-card').forEach(card=>{card.addEventListener('click',()=>{const f=factoryData.find(x=>x.name===card.dataset.name&&x.fullName===card.dataset.full);if(f)openDetail(f)})});
 }
 
-// ==================== 详情弹窗 ====================
 function openDetail(f){
-  if(!f) return;
+  if(!f)return;
   dom.modalTitle.textContent=f.name;
   dom.modalBody.innerHTML=`
     <div class="modal-detail-grid">
       <div class="detail-block">
         <div class="detail-block-title">基本信息</div>
-        <dl class="detail-row">
-          <dt>全称</dt><dd>${f.fullName}</dd>
-          <dt>地址</dt><dd>${f.address||'未提供'}</dd>
-        </dl>
+        <dl class="detail-row"><dt>全称</dt><dd>${f.fullName}</dd><dt>地址</dt><dd>${f.address||'未提供'}</dd></dl>
       </div>
       <div class="detail-block">
         <div class="detail-block-title">岗位要求</div>
-        <dl class="detail-row">
-          <dt>类型</dt><dd>${f.category}</dd>
-          <dt>性别</dt><dd>${f.gender}</dd>
-          <dt>年龄</dt><dd>${f.age}</dd>
-          <dt>班次</dt><dd>${f.shift}</dd>
-        </dl>
+        <dl class="detail-row"><dt>类型</dt><dd>${f.category}</dd><dt>性别</dt><dd>${f.gender}</dd><dt>年龄</dt><dd>${f.age}</dd><dt>班次</dt><dd>${f.shift}</dd></dl>
       </div>
       <div class="detail-block">
         <div class="detail-block-title">薪资待遇</div>
-        <dl class="detail-row">
-          <dt class="highlight-row">日薪</dt><dd class="highlight-row">${f.salary}</dd>
-          <dt class="highlight-row">月薪</dt><dd class="highlight-row">${f.salaryRange}元</dd>
-        </dl>
+        <dl class="detail-row"><dt class="highlight">日薪</dt><dd class="highlight">${f.salary}</dd><dt class="highlight">月薪</dt><dd class="highlight">${f.salaryRange}元</dd></dl>
       </div>
       <div class="detail-block">
         <div class="detail-block-title">食宿情况</div>
-        <dl class="detail-row">
-          <dt>住宿</dt><dd>${f.housing||'未提供'}</dd>
-          <dt>餐食</dt><dd>${f.food||'未提供'}</dd>
-        </dl>
+        <dl class="detail-row"><dt>住宿</dt><dd>${f.housing||'未提供'}</dd><dt>餐食</dt><dd>${f.food||'未提供'}</dd></dl>
       </div>
       <div class="detail-block">
         <div class="detail-block-title">福利亮点</div>
         <div class="detail-remark">${f.features||'无'}</div>
       </div>
-      ${f.requirements?`<div class="detail-block"><div class="detail-block-title">⚠️ 注意事项</div><div class="detail-remark" style="color:var(--red)">${f.requirements}</div></div>`:''}
+      ${f.requirements?`<div class="detail-block"><div class="detail-block-title">⚠️ 注意事项</div><div class="detail-remark danger">${f.requirements}</div></div>`:''}
       ${f.remark?`<div class="detail-block"><div class="detail-block-title">📌 备注</div><div class="detail-remark">${f.remark}</div></div>`:''}
-    </div>
-  `;
+    </div>`;
   dom.modalOverlay.classList.add('open');
   document.body.style.overflow='hidden';
 }
 
-function closeDetail(){
-  dom.modalOverlay.classList.remove('open');
-  document.body.style.overflow='';
-}
+function closeDetail(){dom.modalOverlay.classList.remove('open');document.body.style.overflow=''}
 
-// ==================== Tab ====================
 function switchTab(tab){
   state.currentTab=tab;
   $$('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
@@ -2051,23 +2087,12 @@ function switchTab(tab){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-// ==================== 搜索 ====================
-function handleSearch(value){
-  state.searchQuery=value;
-  dom.searchClear.classList.toggle('visible',value.length>0);
-  renderResults();
-}
+function handleSearch(value){state.searchQuery=value;dom.searchClear.classList.toggle('visible',value.length>0);renderResults()}
 
-// ==================== 复制微信 ====================
 function copyWechat(){
   const id=dom.wechatId.textContent;
-  if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(id).then(()=>{
-      dom.copyBadge.textContent='已复制 ✓';
-      dom.copyBadge.classList.add('copied');
-      setTimeout(()=>{dom.copyBadge.textContent='长按复制';dom.copyBadge.classList.remove('copied')},2000);
-    }).catch(()=>fallbackCopy(id));
-  }else{fallbackCopy(id)}
+  const done=()=>{dom.copyBadge.textContent='已复制 ✓';dom.copyBadge.classList.add('copied');setTimeout(()=>{dom.copyBadge.textContent='长按复制';dom.copyBadge.classList.remove('copied')},2000)};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(id).then(done).catch(()=>{fallbackCopy(id);done()})}else{fallbackCopy(id);done()}
 }
 function fallbackCopy(text){
   const ta=document.createElement('textarea');
@@ -2075,35 +2100,21 @@ function fallbackCopy(text){
   document.body.appendChild(ta);ta.select();
   try{document.execCommand('copy')}catch(e){}
   document.body.removeChild(ta);
-  dom.copyBadge.textContent='已复制 ✓';
-  dom.copyBadge.classList.add('copied');
-  setTimeout(()=>{dom.copyBadge.textContent='长按复制';dom.copyBadge.classList.remove('copied')},2000);
 }
-
-// 微信长按复制
 let longPressTimer=null;
-dom.wechatId.addEventListener('touchstart',function(e){
-  longPressTimer=setTimeout(()=>{copyWechat()},500);
-});
-dom.wechatId.addEventListener('touchend',function(){clearTimeout(longPressTimer)});
-dom.wechatId.addEventListener('touchmove',function(){clearTimeout(longPressTimer)});
+dom.wechatId.addEventListener('touchstart',()=>{longPressTimer=setTimeout(()=>copyWechat(),500)});
+dom.wechatId.addEventListener('touchend',()=>clearTimeout(longPressTimer));
+dom.wechatId.addEventListener('touchmove',()=>clearTimeout(longPressTimer));
 
-// ==================== 初始化 ====================
 function init(){
-  renderAreas();renderShiftFilters();renderPaymentFilters();
-  switchTab('recommend');
-
-  $$('.tab-btn').forEach(btn=>{btn.addEventListener('click',()=>switchTab(btn.dataset.tab))});
-
+  renderAreas();renderShiftFilters();renderPaymentFilters();switchTab('recommend');
+  $$('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>switchTab(btn.dataset.tab)));
   dom.searchInput.addEventListener('input',e=>handleSearch(e.target.value));
   dom.searchClear.addEventListener('click',()=>{dom.searchInput.value='';handleSearch('')});
-
   dom.modalClose.addEventListener('click',closeDetail);
   dom.modalOverlay.addEventListener('click',e=>{if(e.target===dom.modalOverlay)closeDetail()});
-
   dom.copyBtn.addEventListener('click',copyWechat);
 }
-
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init)}else{init()}
 </script>
 </body>
