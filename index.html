@@ -1,308 +1,446 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%E5%8D%97%E4%BA%AC%E8%99%B9%E7%A8%8B%E6%8B%9B%E5%B7%A5%22%2C%22short_name%22%3A%22%E6%8B%9B%E5%B7%A5%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%222563eb%22%2C%22theme_color%22%3A%22f59e0b%22%7D" /><title>南京虹程招工</title><style>/* ==================== Reset & Base ==================== */
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
+﻿<!DOCTYPE html><html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%E5%8D%97%E4%BA%AC%E8%99%B9%E7%A8%8B%E6%8B%9B%E5%B7%A5%22%2C%22short_name%22%3A%22%E6%8B%9B%E5%B7%A5%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22f59e0b%22%2C%22theme_color%22%3A%22f59e0b%22%7D" />
+<title>找厂神器 · 虹程人力资源</title>
+<style>
+/* ===== Reset & Base ===== */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root {
-  --primary: #2563eb;
-  --primary-light: #dbeafe;
-  --orange: #f59e0b;
-  --green: #10b981;
-  --red: #ef4444;
-  --bg: #f0f2f5;
+  --amber: #d97706;
+  --amber-light: #fbbf24;
+  --amber-bg: #fef3c7;
+  --amber-subtle: #fffbeb;
+  --primary: #d97706;
+  --primary-dark: #b45309;
+  --green: #059669;
+  --green-bg: #d1fae5;
+  --red: #dc2626;
+  --red-bg: #fee2e2;
+  --bg: #f5f5f4;
   --card-bg: #ffffff;
-  --text: #1e293b;
-  --text-light: #64748b;
-  --text-muted: #94a3b8;
-  --border: #e2e8f0;
-  --shadow: 0 1px 3px rgba(0,0,0,0.08);
-  --radius: 10px;
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --text: #1c1917;
+  --text-secondary: #57534e;
+  --text-muted: #a8a29e;
+  --border: #e7e5e4;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.08);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --safe-bottom: env(safe-area-inset-bottom,0px);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.5;
+  padding-bottom:calc(16px + var(--safe-bottom));
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
 }
 
-html { font-size:16px; -webkit-text-size-adjust:100%; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-  background: var(--bg); color: var(--text); line-height: 1.5;
-  padding-bottom: 16px;
-  -webkit-font-smoothing: antialiased;
-  user-select: none; -webkit-user-select: none;
-  overflow-x: hidden;
+/* ===== Header ===== */
+.header{
+  background:linear-gradient(135deg,#b45309,#d97706,#f59e0b);
+  position:relative;overflow:hidden;
+}
+.header::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 20% -20%,rgba(255,255,255,0.2),transparent 60%);
+  pointer-events:none;
+}
+.header-title{
+  font-size:1.15rem;font-weight:800;letter-spacing:3px;
+  color:#fff;text-align:center;padding:14px 16px 10px;
+  position:relative;z-index:1;
 }
 
-/* ==================== Header ==================== */
-.header {
-  background: linear-gradient(135deg, #1e40af, #2563eb);
-  color: #fff;
+/* ===== WeChat Bar ===== */
+.wechat-bar{
+  position:sticky;top:0;z-index:102;
+  background:linear-gradient(135deg,#92400e,#b45309);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:10px 16px;user-select:text;-webkit-user-select:text;
+  box-shadow:0 2px 4px rgba(0,0,0,0.1);
 }
-.header-title {
-  font-size:1.2rem; font-weight:700; letter-spacing: 4px;
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  color: #7c2d12;
-  text-align: center; padding: 12px 16px;
+.wechat-bar .label{
+  font-size:0.78rem;color:rgba(255,255,255,0.85);font-weight:500;
+}
+.wechat-bar .wechat-id{
+  font-size:0.88rem;color:#fff;font-weight:700;letter-spacing:0.5px;
+}
+.wechat-bar .copy-badge{
+  font-size:0.6rem;font-weight:600;color:#92400e;
+  background:var(--amber-light);padding:2px 8px;border-radius:6px;
+  margin-left:2px;animation:pulse-badge 2s ease-in-out infinite;
+}
+@keyframes pulse-badge{0%,100%{opacity:1}50%{opacity:0.7}}
+.wechat-bar .copy-badge.copied{background:var(--green-bg);color:#065f46;animation:none}
+.wechat-bar .copy-btn{
+  font-size:0.7rem;font-weight:600;color:#fff;
+  background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);
+  padding:3px 12px;border-radius:14px;cursor:pointer;
+  transition:all 0.15s;touch-action:manipulation;
+}
+.wechat-bar .copy-btn:active{transform:scale(0.95);background:rgba(255,255,255,0.3)}
+
+/* ===== Tab Bar ===== */
+.tab-bar{
+  position:sticky;top:42px;z-index:101;
+  display:flex;background:#fff;padding:0 0 0;
+  box-shadow:0 1px 0 var(--border),0 2px 4px rgba(0,0,0,0.03);
+}
+.tab-btn{
+  flex:1;border:none;background:transparent;
+  padding:10px 0 8px;font-size:0.82rem;font-weight:600;
+  color:var(--text-muted);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+  transition:color 0.2s;position:relative;
+}
+.tab-btn .tab-icon{font-size:1.1rem;line-height:1}
+.tab-btn.active{color:var(--primary)}
+.tab-btn.active::after{
+  content:'';position:absolute;bottom:0;left:25%;right:25%;
+  height:2.5px;background:var(--primary);border-radius:2px 2px 0 0;
+}
+.tab-btn:active{opacity:0.7}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* ===== Search ===== */
+.search-wrap{
+  position:sticky;top:96px;z-index:99;
+  background:var(--bg);padding:10px 12px 8px;
+}
+.search-bar{
+  display:flex;align-items:center;gap:8px;
+  background:var(--card-bg);border-radius:24px;
+  padding:9px 16px;box-shadow:var(--shadow-sm);
+  border:1.5px solid transparent;transition:border-color 0.2s,box-shadow 0.2s;
+}
+.search-bar:focus-within{
+  border-color:var(--amber-light);box-shadow:0 0 0 3px rgba(217,119,6,0.1),var(--shadow-sm);
+}
+.search-icon{font-size:1rem;flex-shrink:0;opacity:0.45}
+.search-input{
+  flex:1;border:none;outline:none;font-size:0.88rem;
+  color:var(--text);background:transparent;-webkit-appearance:none;
+}
+.search-input::placeholder{color:var(--text-muted)}
+.btn-search-clear{
+  width:22px;height:22px;border-radius:50%;
+  border:none;background:var(--border);color:var(--text-secondary);
+  font-size:0.72rem;cursor:pointer;display:none;
+  align-items:center;justify-content:center;
+}
+.btn-search-clear.visible{display:flex}
+
+/* ===== Filter ===== */
+.filter-section{padding:0 12px}
+.filter-group{margin-bottom:4px}
+.filter-label{
+  font-size:0.68rem;font-weight:600;color:var(--text-muted);
+  padding:8px 4px 5px;letter-spacing:0.3px;
+}
+.filter-row{
+  display:flex;gap:6px;overflow-x:auto;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+  padding-bottom:4px;
+}
+.filter-row::-webkit-scrollbar{display:none}
+.filter-chip{
+  flex-shrink:0;padding:5px 14px;border-radius:16px;
+  border:1.5px solid var(--border);background:var(--card-bg);
+  font-size:0.76rem;color:var(--text-secondary);
+  cursor:pointer;transition:all 0.15s;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.filter-chip:active{transform:scale(0.95)}
+.filter-chip.active{
+  background:var(--primary);color:#fff;border-color:var(--primary);font-weight:600;
+  box-shadow:0 1px 4px rgba(217,119,6,0.25);
 }
 
-/* ===== 微信条：sticky 不消失 ===== */
-.wechat-bar {
-  position: sticky; top: 0; z-index: 102;
-  background: linear-gradient(135deg, #1e40af, #2563eb);
-  text-align: center; padding: 10px 16px;
-  user-select: text; -webkit-user-select: text;
-  font-size: 0.82rem; color: #fff;
-  font-weight: 600;
-  border-top: 1px solid rgba(255,255,255,0.15);
-}
-.wechat-bar .copy-hint {
-  display: inline-block;
-  font-size: 0.6rem; font-weight: 400;
-  background: rgba(255,255,255,0.2);
-  padding: 1px 8px; border-radius: 8px;
-  margin-right: 6px;
+/* ===== Result Count ===== */
+.result-count{
+  padding:10px 16px 4px;font-size:0.72rem;color:var(--text-muted);font-weight:500;
 }
 
-/* ==================== Search Bar ==================== */
-.search-wrap {
-  position: sticky; top: 84px; z-index: 99;
-  background: var(--bg); padding: 10px 12px;
-}
-.search-bar {
-  display: flex; align-items: center; gap: 8px;
-  background: var(--card-bg); border-radius: 24px;
-  padding: 8px 16px; box-shadow: var(--shadow);
-}
-.search-icon { font-size:1.1rem; flex-shrink:0; opacity:0.5; }
-.search-input {
-  flex:1; border:none; outline:none; font-size:0.88rem;
-  color: var(--text); background:transparent;
-  -webkit-appearance: none;
-}
-.search-input::placeholder { color: var(--text-muted); }
-.btn-search-clear {
-  width: 22px; height: 22px; border-radius: 50%;
-  border: none; background: #e2e8f0; color: var(--text-light);
-  font-size: 0.75rem; cursor: pointer; display: none;
-  align-items: center; justify-content: center;
-}
-.btn-search-clear.visible { display: flex; }
+/* ===== Factory Cards ===== */
+.factory-list{padding:0 12px 16px;display:flex;flex-direction:column;gap:10px}
 
-/* ==================== Filter Row ==================== */
-.filter-row {
-  display: flex; gap: 8px; padding: 0 12px 8px;
-  overflow-x: auto; -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; white-space: nowrap;
+.factory-card{
+  background:var(--card-bg);border-radius:var(--radius-md);
+  padding:14px 14px 12px;box-shadow:var(--shadow-sm);
+  transition:transform 0.12s,box-shadow 0.2s;
+  cursor:pointer;border:1px solid var(--border);
+  -webkit-tap-highlight-color:transparent;
 }
-.filter-row::-webkit-scrollbar { display:none; }
-.filter-chip {
-  flex-shrink: 0; padding: 5px 14px; border-radius: 16px;
-  border: 1.5px solid #d1d5db; background: var(--card-bg);
-  font-size: 0.78rem; color: var(--text-light);
-  cursor: pointer; transition: all 0.15s;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
+.factory-card:active{transform:scale(0.98)}
+.factory-card:hover{box-shadow:var(--shadow-md)}
+
+.card-header{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:7px;
 }
-.filter-chip:active { transform: scale(0.95); }
-.filter-chip.active {
-  background: var(--primary); color: #fff; border-color: var(--primary);
-  font-weight: 600;
+.card-title{
+  font-size:0.95rem;font-weight:700;line-height:1.3;color:var(--text);
 }
-.filter-label {
-  font-size: 0.7rem; color: var(--text-muted);
-  padding: 6px 12px 4px; font-weight: 600;
-  letter-spacing: 0.5px;
+.card-area{
+  flex-shrink:0;font-size:0.65rem;font-weight:600;
+  padding:2px 10px;border-radius:10px;
+  background:var(--amber-subtle);color:var(--amber);
+  border:1px solid var(--amber-bg);
+}
+.card-area.high-area{background:#eef2ff;color:#4338ca;border-color:#c7d2fe}
+
+.card-info-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:3px 12px;
+  font-size:0.75rem;color:var(--text-secondary);
+}
+.card-info-grid span{display:flex;align-items:center;gap:4px}
+.card-info-grid .label{color:var(--text-muted);font-size:0.68rem}
+.card-info-grid .value{font-weight:500;color:var(--text)}
+
+.card-salary{
+  margin-top:7px;padding:6px 10px;
+  background:#fef2f2;border-radius:var(--radius-sm);
+  font-size:0.81rem;font-weight:700;color:var(--red);
+  line-height:1.4;
 }
 
-/* ==================== Recommendation Section ==================== */
-.recommended-section {
-  padding: 8px 12px 4px;
+.card-tags{
+  margin-top:6px;display:flex;flex-wrap:wrap;gap:4px;
 }
-.recommended-title {
-  font-size: 0.78rem; font-weight: 700; color: var(--primary);
-  padding: 0 4px 8px;
+.tag{
+  font-size:0.64rem;padding:2px 8px;border-radius:8px;
+  font-weight:500;white-space:nowrap;line-height:1.5;
 }
-.recommended-grid {
-  display: flex; gap: 8px; overflow-x: auto;
-  -webkit-overflow-scrolling: touch; scrollbar-width: none;
-  padding-bottom: 8px;
-}
-.recommended-grid::-webkit-scrollbar { display: none; }
-.rec-card {
-  flex-shrink: 0; padding: 10px 14px;
-  background: linear-gradient(135deg, #fef3c7, #fde68a);
-  border: 2px solid #f59e0b;
-  border-radius: 12px; white-space: nowrap;
-  font-size: 0.82rem; font-weight: 700;
-  color: #7c2d12;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  text-align: center;
-}
-.rec-card:active { transform: scale(0.95); }
+.tag.blue{background:#dbeafe;color:#1d4ed8}
+.tag.green{background:var(--green-bg);color:#065f46}
+.tag.amber{background:var(--amber-bg);color:#92400e}
+.tag.red{background:var(--red-bg);color:#991b1b}
 
-/* ==================== Result Count ==================== */
-.result-count {
-  padding: 6px 16px; font-size:0.75rem; color: var(--text-muted);
+.card-features{
+  margin-top:5px;font-size:0.68rem;color:var(--text-muted);
+  display:flex;align-items:center;gap:4px;
+  border-top:1px dashed var(--border);padding-top:5px;
 }
 
-/* ==================== Factory Cards ==================== */
-.factory-list { padding: 0 12px 16px; display:flex; flex-direction:column; gap:10px; }
+/* ===== Recommend Tab ===== */
+.quick-pick{
+  padding:10px 12px 4px;
+}
+.quick-pick-title{
+  font-size:0.72rem;font-weight:600;color:var(--text-muted);
+  padding:0 4px 8px;letter-spacing:0.3px;
+}
+.quick-pick-row{
+  display:flex;gap:8px;overflow-x:auto;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+  padding-bottom:6px;
+}
+.quick-pick-row::-webkit-scrollbar{display:none}
+.quick-pick-item{
+  flex-shrink:0;padding:8px 14px;
+  background:#fff;border:1.5px solid var(--amber-light);
+  border-radius:20px;white-space:nowrap;
+  font-size:0.78rem;font-weight:700;color:var(--amber);
+  cursor:pointer;transition:all 0.15s;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.quick-pick-item:active{transform:scale(0.95);background:var(--amber-subtle)}
 
-.factory-card {
-  background: var(--card-bg); border-radius: var(--radius);
-  padding: 14px; box-shadow: var(--shadow);
-  transition: transform 0.12s ease;
-  border-left: 4px solid transparent;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
+.rec-section{
+  padding:4px 12px 80px;
 }
-.factory-card:active { transform: scale(0.98); }
-.factory-card.highlight { border-left-color: var(--primary); }
-
-.card-header {
-  display: flex; align-items: flex-start; justify-content: space-between;
-  gap: 8px; margin-bottom: 8px;
-}
-.card-title { font-size:0.95rem; font-weight:700; line-height:1.3; }
-.card-area {
-  flex-shrink: 0; font-size:0.68rem; font-weight:600;
-  padding: 2px 10px; border-radius: 10px;
-}
-
-/* ==================== Card Info Rows ==================== */
-.card-info-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 4px 12px; font-size:0.76rem; color: var(--text-light);
-}
-.card-info-grid span { display:flex; align-items:center; gap:4px; }
-.card-info-grid .label { color: var(--text-muted); font-size:0.7rem; }
-.card-info-grid .value { font-weight:500; color: var(--text); }
-
-.card-salary {
-  margin-top: 6px; font-size:0.82rem; font-weight:700; color: var(--red);
-}
-.card-salary::before { content:'💰 '; font-weight:400; }
-
-.card-features {
-  margin-top: 6px; display:flex; flex-wrap:wrap; gap:4px;
-}
-.tag {
-  font-size:0.66rem; padding:2px 8px; border-radius:10px;
-  background: var(--primary-light); color: #1d4ed8;
-  font-weight: 500; white-space: nowrap;
-}
-.tag.good { background: #d1fae5; color: #065f46; }
-.tag.warn { background: #fef3c7; color: #92400e; }
-
-.card-remark {
-  margin-top:6px; font-size:0.7rem; color: var(--text-muted);
-  border-top: 1px dashed var(--border); padding-top:6px;
+.rec-section-title{
+  font-size:0.85rem;font-weight:700;color:var(--text);
+  padding:10px 4px 6px;display:flex;align-items:center;gap:6px;
 }
 
-/* ==================== Detail Modal ==================== */
-.modal-overlay {
-  position: fixed; inset:0; background: rgba(0,0,0,0.5); z-index:400;
-  display:flex; align-items:flex-end; justify-content:center;
-  opacity:0; visibility:hidden; transition: all 0.25s ease;
+.rec-card{
+  background:var(--card-bg);border-radius:var(--radius-md);
+  padding:14px;box-shadow:var(--shadow-sm);margin-bottom:10px;
+  border:1px solid var(--border);
+  border-left:3px solid var(--amber-light);
+  cursor:pointer;transition:transform 0.12s;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
 }
-.modal-overlay.open { opacity:1; visibility:visible; }
+.rec-card:active{transform:scale(0.98)}
+.rec-card-header{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.rec-card-star{color:var(--amber-light);font-size:0.85rem;flex-shrink:0}
+.rec-card-name{font-size:0.95rem;font-weight:700}
+.rec-card-area{
+  margin-left:auto;font-size:0.65rem;font-weight:600;
+  padding:2px 10px;border-radius:10px;
+  background:var(--amber-subtle);color:var(--amber);border:1px solid var(--amber-bg);
+  flex-shrink:0;
+}
+.rec-card-info{
+  display:grid;grid-template-columns:1fr 1fr;gap:3px 12px;
+  font-size:0.75rem;color:var(--text-secondary);
+}
+.rec-card-info span{display:flex;align-items:center;gap:4px}
+.rec-card-info .label{color:var(--text-muted);font-size:0.68rem}
+.rec-card-info .value{font-weight:500;color:var(--text)}
+.rec-card-salary{
+  margin-top:7px;padding:6px 10px;
+  background:#fef2f2;border-radius:var(--radius-sm);
+  font-size:0.81rem;font-weight:700;color:var(--red);line-height:1.4;
+}
+.rec-card-tags{margin-top:6px;display:flex;flex-wrap:wrap;gap:4px}
 
-.modal-sheet {
-  background: var(--card-bg); border-radius: 20px 20px 0 0;
-  width: 100%; max-width: 500px; max-height: 80vh;
-  display:flex; flex-direction:column;
-  transform: translateY(100%);
-  transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
-  padding-bottom: var(--safe-bottom);
+/* ===== Detail Modal ===== */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:400;
+  display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;visibility:hidden;transition:opacity 0.25s ease;
 }
-.modal-overlay.open .modal-sheet { transform: translateY(0); }
-.modal-handle { width:40px; height:4px; background:#d1d5db; border-radius:2px; margin:10px auto; flex-shrink: 0; }
-.modal-header {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:6px 20px 12px; flex-shrink:0;
+.modal-overlay.open{opacity:1;visibility:visible}
+.modal-sheet{
+  background:var(--card-bg);border-radius:var(--radius-lg) var(--radius-lg) 0 0;
+  width:100%;max-width:500px;max-height:82vh;
+  display:flex;flex-direction:column;
+  transform:translateY(100%);
+  transition:transform 0.35s cubic-bezier(0.22,1,0.36,1);
+  padding-bottom:var(--safe-bottom);
 }
-.modal-title { font-size:1.1rem; font-weight:700; }
-.btn-modal-close {
-  width:30px; height:30px; border-radius:50%; border:none;
-  background: #f1f5f9; font-size:1rem; cursor:pointer;
-  display:flex; align-items:center; justify-content:center;
+.modal-overlay.open .modal-sheet{transform:translateY(0)}
+.modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:10px auto;flex-shrink:0}
+.modal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:4px 20px 10px;flex-shrink:0;
 }
-.modal-body { overflow-y:auto; -webkit-overflow-scrolling:touch; padding:0 20px 20px; flex:1; }
-.modal-body .dl { display:grid; grid-template-columns: 72px 1fr; gap:8px; font-size:0.85rem; }
-.modal-body .dl dt { color:var(--text-muted); font-weight:500; }
-.modal-body .dl dd { color:var(--text); }
-.modal-body .dl hr { grid-column: 1/-1; border:none; border-top:1px solid var(--border); margin:4px 0; }
-.modal-body .requirements { color: var(--red); }
+.modal-title{font-size:1.05rem;font-weight:700;color:var(--text)}
+.btn-modal-close{
+  width:30px;height:30px;border-radius:50%;border:none;
+  background:#f5f5f4;font-size:1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text-secondary);transition:background 0.15s;
+}
+.btn-modal-close:active{background:#e7e5e4}
+.modal-body{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 20px 20px;flex:1}
 
-/* ==================== Empty State ==================== */
-.empty-state {
-  text-align:center; padding:48px 20px; color:var(--text-muted);
+.modal-detail-grid{display:flex;flex-direction:column;gap:0}
+.detail-block{
+  padding:12px 0;
 }
-.empty-state .empty-icon { font-size:3rem; margin-bottom:8px; }
-.empty-state .empty-text { font-size:0.9rem; }
+.detail-block+.detail-block{border-top:1px solid var(--border)}
+.detail-block-title{
+  font-size:0.7rem;font-weight:600;color:var(--text-muted);
+  letter-spacing:0.3px;margin-bottom:8px;
+}
+.detail-row{
+  display:grid;grid-template-columns:60px 1fr;gap:6px 10px;font-size:0.84rem;
+}
+.detail-row dt{color:var(--text-muted);font-weight:500}
+.detail-row dd{color:var(--text)}
+.modal-body .highlight-row{color:var(--red);font-weight:600}
+.modal-body .detail-remark{
+  font-size:0.78rem;color:var(--text-secondary);line-height:1.6;
+}
 
-/* ==================== Responsive ==================== */
-@media (min-width:768px) {
-  body { max-width: 600px; margin:0 auto; box-shadow:0 0 30px rgba(0,0,0,0.05); }
-  .factory-list { gap: 12px; padding: 0 16px 16px; }
+/* ===== Empty State ===== */
+.empty-state{
+  text-align:center;padding:48px 20px;color:var(--text-muted);
 }
+.empty-state .empty-icon{font-size:2.8rem;margin-bottom:10px;display:block}
+.empty-state .empty-text{font-size:0.88rem;color:var(--text-secondary)}
 
-/* Animation */
-@keyframes fadeInUp {
-  from { opacity:0; transform:translateY(8px); }
-  to { opacity:1; transform:translateY(0); }
-}
-.factory-card { animation: fadeInUp 0.25s ease both; }
+/* ===== Loading ===== */
+.loading-skeleton{text-align:center;padding:20px;color:var(--text-muted);font-size:0.82rem}
 
-/* ==================== Tab Bar (top) ==================== */
-.tab-bar {
-  position: sticky; top: 36px; z-index: 101;
-  display: flex; background: #fff;
-  border-bottom: 2px solid #e2e8f0;
-  padding: 0;
+/* ===== Animation ===== */
+@keyframes fadeInUp{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
 }
-.tab-btn {
-  flex:1; border:none; background:transparent;
-  padding:10px 0 8px; font-size:0.82rem; font-weight:600;
-  color: var(--text-muted); cursor:pointer;
-  display:flex; flex-direction:column; align-items:center; gap:2px;
-  -webkit-tap-highlight-color:transparent; touch-action:manipulation;
-  transition:color 0.15s; position:relative;
-}
-.tab-btn .tab-icon { font-size:1.1rem; line-height:1; }
-.tab-btn.active { color: var(--primary); }
-.tab-btn.active::after {
-  content:''; position:absolute; bottom:0; left:20%; right:20%;
-  height:3px; background:var(--primary); border-radius:3px 3px 0 0;
-}
-.tab-btn:active { opacity:0.7; }
+.factory-card,.rec-card{animation:fadeInUp 0.25s ease both}
 
-/* ==================== Tab Panels ==================== */
-.tab-panel { display:none; }
-.tab-panel.active { display:block; }
-
-/* ==================== Recommend Detail Page ==================== */
-.rec-detail-grid { padding:8px 12px 80px; display:flex; flex-direction:column; gap:10px; }
-.rec-detail-card {
-  background: var(--card-bg); border-radius: var(--radius);
-  padding:14px; box-shadow:var(--shadow);
-  border:2px solid #f59e0b;
-  cursor:pointer; transition:transform 0.12s;
-  -webkit-tap-highlight-color:transparent; touch-action:manipulation;
+/* ===== Responsive ===== */
+@media(min-width:768px){
+  body{max-width:600px;margin:0 auto;box-shadow:0 0 30px rgba(0,0,0,0.05);min-height:100vh}
+  .factory-list{gap:12px;padding:0 16px 16px}
 }
-.rec-detail-card:active { transform:scale(0.98); }
-.rec-detail-header { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
-.rec-star { color:#f59e0b; font-size:0.9rem; flex-shrink:0; }
-.rec-detail-name { font-size:1rem; font-weight:700; }
-.rec-detail-info { display:grid; grid-template-columns:1fr 1fr; gap:4px 12px; font-size:0.78rem; color:var(--text-light); }
-.rec-detail-salary { margin-top:6px; font-size:0.85rem; font-weight:700; color:var(--red); }
-.rec-detail-tags { margin-top:6px; display:flex; flex-wrap:wrap; gap:4px; }
-</style></head><body>
-<header class="header"><div class="header-title">找厂认准虹程人力资源</div></header>
-<div class="wechat-bar"><span class="copy-hint">长按复制</span>联系微信：leeheesung_</div>
-<div class="tab-bar"><button class="tab-btn active" data-tab="recommend"><span class="tab-icon">⭐</span><span>推荐</span></button><button class="tab-btn" data-tab="filter"><span class="tab-icon">🔍</span><span>筛选</span></button></div>
-<div class="tab-panel active" id="tab-recommend"><div class="rec-detail-grid" id="recDetail"><div class="empty-state"><div class="empty-icon">⭐</div><div class="empty-text">加载推荐厂区...</div></div></div></div>
-<div class="tab-panel" id="tab-filter"><div class="search-wrap"><div class="search-bar"><span class="search-icon">🔍</span><input type="search" class="search-input" id="searchInput" placeholder="搜索厂名、地区、岗位…" /><button class="btn-search-clear" id="searchClear">✕</button></div></div><div class="filter-label">📍 区域</div><div class="filter-row loading-row" id="areaBar">加载中...</div><div class="filter-label">🕐 班次</div><div class="filter-row loading-row" id="shiftBar">加载中...</div><div class="filter-label">💰 结算</div><div class="filter-row loading-row" id="paymentBar">加载中...</div><div class="result-count" id="resultCount"></div><div class="factory-list" id="factoryList"><div class="empty-state"><div class="empty-icon">⏳</div><div class="empty-text">加载工厂数据...</div></div></div></div>
-<div class="modal-overlay" id="modalOverlay"><div class="modal-sheet"><div class="modal-handle"></div><div class="modal-header"><span class="modal-title" id="modalTitle">工厂详情</span><button class="btn-modal-close" id="modalClose">✕</button></div><div class="modal-body" id="modalBody"></div></div></div>
-<script>// ==================== 工厂招聘数据（去重后） ====================
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-title">找厂认准虹程人力资源</div>
+</header>
+
+<!-- WeChat Bar -->
+<div class="wechat-bar" id="wechatBar">
+  <span class="label">📱 联系微信</span>
+  <span class="wechat-id" id="wechatId">leeheesung_</span>
+  <span class="copy-badge" id="copyBadge">长按复制</span>
+  <button class="copy-btn" id="copyBtn">复制</button>
+</div>
+
+<!-- Tab Bar -->
+<div class="tab-bar">
+  <button class="tab-btn active" data-tab="recommend"><span class="tab-icon">⭐</span><span>精选推荐</span></button>
+  <button class="tab-btn" data-tab="filter"><span class="tab-icon">🔍</span><span>全部筛选</span></button>
+</div>
+
+<!-- Recommend Tab -->
+<div class="tab-panel active" id="tab-recommend">
+  <div class="quick-pick" id="quickPick"></div>
+  <div class="rec-section" id="recSection">
+    <div class="rec-section-title">🏭 热门推荐</div>
+    <div id="recList"><div class="empty-state"><span class="empty-icon">⏳</span><div class="empty-text">加载推荐厂区...</div></div></div>
+  </div>
+</div>
+
+<!-- Filter Tab -->
+<div class="tab-panel" id="tab-filter">
+  <div class="search-wrap">
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="search" class="search-input" id="searchInput" placeholder="搜索厂名、地区、岗位…" />
+      <button class="btn-search-clear" id="searchClear">✕</button>
+    </div>
+  </div>
+  <div class="filter-section">
+    <div class="filter-group">
+      <div class="filter-label">📍 区域</div>
+      <div class="filter-row" id="areaBar"><div class="loading-skeleton">加载中...</div></div>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">🕐 班次</div>
+      <div class="filter-row" id="shiftBar"><div class="loading-skeleton">加载中...</div></div>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">💰 结算方式</div>
+      <div class="filter-row" id="paymentBar"><div class="loading-skeleton">加载中...</div></div>
+    </div>
+  </div>
+  <div class="result-count" id="resultCount"></div>
+  <div class="factory-list" id="factoryList">
+    <div class="empty-state"><span class="empty-icon">⏳</span><div class="empty-text">加载工厂数据...</div></div>
+  </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title" id="modalTitle">工厂详情</span>
+      <button class="btn-modal-close" id="modalClose">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ==================== 工厂招聘数据 ====================
 const factoryData = [
   {
     "name": "通淮街汽配厂",
@@ -1674,337 +1812,299 @@ const factoryData = [
   }
 ];
 
-// 依赖: 区域列表、班次筛选、结算方式筛选
 const areas = ['全部', '江宁', '秦淮', '浦口', '栖霞', '溧水', '雨花', '六合', '丹阳', '高淳', '滁州'];
 const shiftFilters = ['全部', '长白班', '两班倒', '长白班为主'];
 const paymentFilters = ['全部', '日结', '月结', '周结'];
-</script><script>// ==================== 状态管理 ====================
-const state = {
-  searchQuery: '',
-  areaFilter: '全部',
-  shiftFilter: '全部',
-  paymentFilter: '全部',
-  currentTab: 'recommend',
-};
 
-// ==================== DOM 引用 ====================
-const $ = (sel) => document.querySelector(sel);
-const $$ = (sel) => document.querySelectorAll(sel);
-
-const dom = {
-  searchInput: $('#searchInput'),
-  searchClear: $('#searchClear'),
-  areaBar: $('#areaBar'),
-  shiftBar: $('#shiftBar'),
-  paymentBar: $('#paymentBar'),
-  resultCount: $('#resultCount'),
-  factoryList: $('#factoryList'),
-  recDetail: $('#recDetail'),
-  modalOverlay: $('#modalOverlay'),
-  modalBody: $('#modalBody'),
-  modalTitle: $('#modalTitle'),
-  modalClose: $('#modalClose'),
-};
-
-// 推荐厂区映射
-const recommendedFactories = [
-  { display: '白象', keyword: '白象' },
-  { display: '菲尼克斯', keyword: '菲尼克斯' },
-  { display: '江宁汽车仓库', keyword: '江宁汽车仓库' },
-  { display: '芯德', keyword: '芯德' },
-  { display: '尚界超级工厂', keyword: '尚界超级工厂' },
-  { display: '滨江国企', keyword: '滨江国企' },
-  { display: '泉峰科技529', keyword: '泉峰科技529' },
-  { display: '音响厂', keyword: '音响厂' },
-  { display: '舍弗勒', keyword: '舍弗勒' },
-  { display: '华玻', keyword: '华玻' },
+const recommendedKeywords = [
+  {display:'白象',keyword:'白象'},
+  {display:'菲尼克斯',keyword:'菲尼克斯'},
+  {display:'江宁汽车仓库',keyword:'江宁汽车仓库'},
+  {display:'芯德',keyword:'芯德'},
+  {display:'尚界超级工厂',keyword:'尚界超级工厂'},
+  {display:'滨江国企',keyword:'滨江国企'},
+  {display:'泉峰科技',keyword:'泉峰科技'},
+  {display:'音响厂',keyword:'音响厂'},
+  {display:'舍弗勒',keyword:'舍弗勒'},
+  {display:'华玻',keyword:'华玻'},
 ];
 
-// ==================== 筛选逻辑 ====================
-function getFilteredData() {
-  let data = factoryData;
+// ==================== 状态 ====================
+const state = {
+  searchQuery:'',
+  areaFilter:'全部',
+  shiftFilter:'全部',
+  paymentFilter:'全部',
+  currentTab:'recommend',
+};
 
-  // 区域筛选
-  if (state.areaFilter !== '全部') {
-    data = data.filter(f => f.area === state.areaFilter);
-  }
+const $=s=>document.querySelector(s);
+const $$=s=>document.querySelectorAll(s);
 
-  // 班次筛选
-  if (state.shiftFilter !== '全部') {
-    data = data.filter(f => f.shift.includes(state.shiftFilter));
-  }
+const dom = {
+  searchInput:$('#searchInput'),searchClear:$('#searchClear'),
+  areaBar:$('#areaBar'),shiftBar:$('#shiftBar'),paymentBar:$('#paymentBar'),
+  resultCount:$('#resultCount'),factoryList:$('#factoryList'),
+  recList:$('#recList'),quickPick:$('#quickPick'),
+  modalOverlay:$('#modalOverlay'),modalBody:$('#modalBody'),
+  modalTitle:$('#modalTitle'),modalClose:$('#modalClose'),
+  copyBtn:$('#copyBtn'),copyBadge:$('#copyBadge'),wechatId:$('#wechatId'),
+};
 
-  // 结算方式筛选
-  if (state.paymentFilter !== '全部') {
-    data = data.filter(f => {
-      const txt = f.salary + f.features + (f.remark || '');
-      return txt.includes(state.paymentFilter);
-    });
-  }
+// ==================== 工具函数 ====================
+function getTags(f){
+  const t=[];
+  if(f.shift.includes('长白班')) t.push('<span class="tag green">长白班</span>');
+  else if(f.shift.includes('两班倒')) t.push('<span class="tag blue">两班倒</span>');
+  if(f.features.includes('坐班')) t.push('<span class="tag green">坐班</span>');
+  if(f.features.includes('五险')||f.features.includes('五险一金')) t.push('<span class="tag green">五险一金</span>');
+  if(f.features.includes('日结')) t.push('<span class="tag amber">日结</span>');
+  if(f.features.includes('不体检')) t.push('<span class="tag green">不体检</span>');
+  if(f.features.includes('包吃住')||f.features.includes('厂吃厂住')) t.push('<span class="tag blue">包吃住</span>');
+  if(f.features.includes('不穿无尘服')) t.push('<span class="tag green">不穿无尘服</span>');
+  if(f.features.includes('大龄工')) t.push('<span class="tag amber">大龄工</span>');
+  if(f.features.includes('预支')) t.push('<span class="tag green">可预支</span>');
+  if(f.features.includes('国企')) t.push('<span class="tag green">国企</span>');
+  if(f.features.includes('德企')) t.push('<span class="tag green">优质外企</span>');
+  return t.join('');
+}
 
-  // 搜索筛选
-  const q = state.searchQuery.toLowerCase().trim();
-  if (q) {
-    data = data.filter(f => {
-      return (
-        f.name.toLowerCase().includes(q) ||
-        f.fullName.toLowerCase().includes(q) ||
-        f.area.toLowerCase().includes(q) ||
-        f.address.toLowerCase().includes(q) ||
-        f.category.toLowerCase().includes(q) ||
-        f.salary.toLowerCase().includes(q) ||
-        f.features.toLowerCase().includes(q) ||
-        (f.remark || '').toLowerCase().includes(q)
-      );
-    });
-  }
-
+// ==================== 筛选 ====================
+function getFilteredData(){
+  let data=factoryData;
+  if(state.areaFilter!=='全部') data=data.filter(f=>f.area===state.areaFilter);
+  if(state.shiftFilter!=='全部') data=data.filter(f=>f.shift.includes(state.shiftFilter));
+  if(state.paymentFilter!=='全部') data=data.filter(f=>(f.salary+f.features+(f.remark||'')).includes(state.paymentFilter));
+  const q=state.searchQuery.toLowerCase().trim();
+  if(q) data=data.filter(f=>(f.name+f.fullName+f.area+f.address+f.category+f.salary+f.features+(f.remark||'')).toLowerCase().includes(q));
   return data;
 }
 
-// ==================== 渲染区域标签 ====================
-function renderAreas() {
-  dom.areaBar.innerHTML = areas.map(a => `
-    <button class="filter-chip area-chip ${a === state.areaFilter ? 'active' : ''}" data-area="${a}">
-      ${a}
-    </button>
-  `).join('');
-
-  dom.areaBar.querySelectorAll('.area-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      state.areaFilter = chip.dataset.area;
+function renderFilters(bar,items,key,cls){
+  bar.innerHTML=items.map(i=>`<button class="filter-chip${i===state[key]?' active':''}" data-${cls}="${i}">${i}</button>`).join('');
+  bar.querySelectorAll(`[data-${cls}]`).forEach(chip=>{
+    chip.addEventListener('click',()=>{
+      state[key]=chip.dataset[cls];
       renderAreas();
-      renderResults();
-    });
-  });
-}
-
-// ==================== 渲染班次标签 ====================
-function renderShiftFilters() {
-  dom.shiftBar.innerHTML = shiftFilters.map(s => `
-    <button class="filter-chip shift-chip ${s === state.shiftFilter ? 'active' : ''}" data-shift="${s}">
-      ${s}
-    </button>
-  `).join('');
-
-  dom.shiftBar.querySelectorAll('.shift-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      state.shiftFilter = chip.dataset.shift;
       renderShiftFilters();
-      renderResults();
-    });
-  });
-}
-
-// ==================== 渲染结算方式标签 ====================
-function renderPaymentFilters() {
-  dom.paymentBar.innerHTML = paymentFilters.map(p => `
-    <button class="filter-chip pay-chip ${p === state.paymentFilter ? 'active' : ''}" data-pay="${p}">
-      ${p}
-    </button>
-  `).join('');
-
-  dom.paymentBar.querySelectorAll('.pay-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      state.paymentFilter = chip.dataset.pay;
       renderPaymentFilters();
       renderResults();
     });
   });
 }
 
-// ==================== 渲染卡片列表 ====================
-function renderResults() {
-  const data = getFilteredData();
+function renderAreas(){renderFilters(dom.areaBar,areas,'areaFilter','area')}
+function renderShiftFilters(){renderFilters(dom.shiftBar,shiftFilters,'shiftFilter','shift')}
+function renderPaymentFilters(){renderFilters(dom.paymentBar,paymentFilters,'paymentFilter','pay')}
 
-  dom.resultCount.textContent = `共 ${data.length} 家工厂`;
-
-  if (data.length === 0) {
-    dom.factoryList.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">🔍</div>
-        <div class="empty-text">没有找到匹配的工厂，试试调整筛选条件</div>
-      </div>
-    `;
+// ==================== 渲染卡片 ====================
+function renderResults(){
+  const data=getFilteredData();
+  dom.resultCount.textContent=`共 ${data.length} 家工厂`;
+  if(data.length===0){
+    dom.factoryList.innerHTML=`<div class="empty-state"><span class="empty-icon">🔍</span><div class="empty-text">没有找到匹配的工厂，试试调整筛选条件</div></div>`;
     return;
   }
-
-  dom.factoryList.innerHTML = data.map((f, i) => {
-    // 构建标签
-    const tags = [];
-    if (f.shift.includes('长白班')) tags.push('<span class="tag good">长白班</span>');
-    else if (f.shift.includes('两班倒')) tags.push('<span class="tag">两班倒</span>');
-    if (f.features.includes('坐班')) tags.push('<span class="tag good">坐班</span>');
-    if (f.features.includes('五险') || f.features.includes('五险一金')) tags.push('<span class="tag good">五险一金</span>');
-    if (f.features.includes('日结')) tags.push('<span class="tag warn">日结</span>');
-    if (f.features.includes('不体检')) tags.push('<span class="tag good">不体检</span>');
-    if (f.features.includes('包吃包住') || f.features.includes('厂吃厂住')) tags.push('<span class="tag">包吃住</span>');
-    if (f.features.includes('不穿无尘服')) tags.push('<span class="tag good">不穿无尘服</span>');
-
-    return `
-      <div class="factory-card highlight" data-id="${i}" style="animation-delay:${i * 0.03}s">
-        <div class="card-header">
-          <div class="card-title">${f.name}</div>
-          <div class="card-area">📍 ${f.area}</div>
-        </div>
-        <div class="card-info-grid">
-          <span><span class="label">性别</span><span class="value">${f.gender}</span></span>
-          <span><span class="label">年龄</span><span class="value">${f.age}</span></span>
-          <span><span class="label">班次</span><span class="value">${f.shift}</span></span>
-          <span><span class="label">月薪</span><span class="value">${f.salaryRange}元</span></span>
-        </div>
-        <div class="card-salary">${f.salary}</div>
-        <div class="card-features">${tags.join('')}</div>
-        ${f.features ? `<div class="card-remark">🏷️ ${f.features.split(',').slice(0, 3).join(' · ')}</div>` : ''}
+  dom.factoryList.innerHTML=data.map((f,i)=>{
+    const areaClass=f.area==='江宁'?'high-area':'';
+    return `<div class="factory-card" data-id="${i}" style="animation-delay:${i*0.03}s">
+      <div class="card-header">
+        <div class="card-title">${f.name}</div>
+        <div class="card-area ${areaClass}">${f.area}</div>
       </div>
-    `;
+      <div class="card-info-grid">
+        <span><span class="label">性别</span><span class="value">${f.gender}</span></span>
+        <span><span class="label">年龄</span><span class="value">${f.age}</span></span>
+        <span><span class="label">班次</span><span class="value">${f.shift}</span></span>
+        <span><span class="label">月薪</span><span class="value">${f.salaryRange}元</span></span>
+      </div>
+      <div class="card-salary">${f.salary}</div>
+      <div class="card-tags">${getTags(f)}</div>
+      ${f.features?`<div class="card-features">🏷️ ${f.features.split(',').slice(0,3).join(' · ')}</div>`:''}
+    </div>`;
   }).join('');
+  dom.factoryList.querySelectorAll('.factory-card').forEach(card=>{
+    card.addEventListener('click',()=>openDetail(getFilteredData()[parseInt(card.dataset.id)]));
+  });
+}
 
-  // 绑定点击事件
-  dom.factoryList.querySelectorAll('.factory-card').forEach((card) => {
-    card.addEventListener('click', () => {
-      const idx = parseInt(card.dataset.id);
-      openDetail(getFilteredData()[idx]);
+// ==================== Quick Pick ====================
+function renderQuickPick(){
+  dom.quickPick.innerHTML=`
+    <div class="quick-pick-title">⚡ 快速筛选</div>
+    <div class="quick-pick-row">
+      ${recommendedKeywords.map(k=>`<button class="quick-pick-item" data-keyword="${k.keyword}">${k.display}</button>`).join('')}
+    </div>
+    <div class="quick-pick-row" style="margin-top:4px">
+      ${areas.filter(a=>a!=='全部').map(a=>`<button class="quick-pick-item" data-area="${a}">📍 ${a}</button>`).join('')}
+    </div>
+  `;
+  dom.quickPick.querySelectorAll('.quick-pick-item').forEach(item=>{
+    item.addEventListener('click',()=>{
+      if(item.dataset.keyword){
+        dom.searchInput.value=item.dataset.keyword;
+        state.searchQuery=item.dataset.keyword;
+        dom.searchClear.classList.toggle('visible',true);
+        switchTab('filter');
+      }else if(item.dataset.area){
+        state.areaFilter=item.dataset.area;
+        switchTab('filter');
+      }
+    });
+  });
+}
+
+// ==================== 推荐页 ====================
+function renderRecommendedDetail(){
+  const matched=[];
+  recommendedKeywords.forEach(r=>{
+    factoryData.filter(f=>f.name.includes(r.keyword)||f.fullName.includes(r.keyword)).forEach(f=>{
+      if(!matched.some(m=>m.name===f.name&&m.fullName===f.fullName)) matched.push(f);
+    });
+  });
+  dom.recList.innerHTML=matched.map(f=>`
+    <div class="rec-card" data-name="${f.name}" data-full="${f.fullName}">
+      <div class="rec-card-header">
+        <span class="rec-card-star">⭐</span>
+        <span class="rec-card-name">${f.name}</span>
+        <span class="rec-card-area">${f.area}</span>
+      </div>
+      <div class="rec-card-info">
+        <span><span class="label">性别</span><span class="value">${f.gender}</span></span>
+        <span><span class="label">年龄</span><span class="value">${f.age}</span></span>
+        <span><span class="label">班次</span><span class="value">${f.shift}</span></span>
+        <span><span class="label">月薪</span><span class="value">${f.salaryRange}元</span></span>
+      </div>
+      <div class="rec-card-salary">${f.salary}</div>
+      <div class="rec-card-tags">${getTags(f)}</div>
+      ${f.remark?`<div style="margin-top:5px;font-size:0.68rem;color:var(--text-muted);padding-top:5px;border-top:1px dashed var(--border)">${f.remark}</div>`:''}
+    </div>
+  `).join('');
+  dom.recList.querySelectorAll('.rec-card').forEach(card=>{
+    card.addEventListener('click',()=>{
+      const f=factoryData.find(x=>x.name===card.dataset.name&&x.fullName===card.dataset.full);
+      if(f) openDetail(f);
     });
   });
 }
 
 // ==================== 详情弹窗 ====================
-function openDetail(f) {
-  if (!f) return;
-
-  dom.modalTitle.textContent = f.name;
-  dom.modalBody.innerHTML = `
-    <dl class="dl">
-      <dt>全称</dt><dd>${f.fullName}</dd>
-      <dt>地址</dt><dd>${f.address || '未提供'}</dd>
-      <hr>
-      <dt>类型</dt><dd>${f.category}</dd>
-      <dt>性别</dt><dd>${f.gender}</dd>
-      <dt>年龄</dt><dd>${f.age}</dd>
-      <dt>班次</dt><dd>${f.shift}</dd>
-      <hr>
-      <dt>日薪</dt><dd>${f.salary}</dd>
-      <dt>月薪</dt><dd>${f.salaryRange}元</dd>
-      <hr>
-      <dt>食宿</dt><dd>${f.housing || '未提供'}</dd>
-      <dt>餐食</dt><dd>${f.food || '未提供'}</dd>
-      <hr>
-      <dt>亮点</dt><dd>${f.features || '无'}</dd>
-      
-      ${f.requirements ? `<hr><dt class="requirements">要求</dt><dd class="requirements">${f.requirements}</dd>` : ''}
-      ${f.remark ? `<hr><dt>备注</dt><dd>${f.remark}</dd>` : ''}
-    </dl>
-  `;
-
-  dom.modalOverlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeDetail() {
-  dom.modalOverlay.classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-// ==================== 推荐厂区详情页 ====================
-function renderRecommendedDetail() {
-  const matched = [];
-  recommendedFactories.forEach(r => {
-    const list = factoryData.filter(f => f.name.includes(r.keyword) || f.fullName.includes(r.keyword));
-    list.forEach(f => {
-      if (!matched.some(m => m.name === f.name && m.fullName === f.fullName)) matched.push(f);
-    });
-  });
-
-  dom.recDetail.innerHTML = matched.map(f => {
-    const tags = [];
-    if (f.shift.includes('长白班')) tags.push('<span class="tag good">长白班</span>');
-    else if (f.shift.includes('两班倒')) tags.push('<span class="tag">两班倒</span>');
-    if (f.features.includes('坐班')) tags.push('<span class="tag good">坐班</span>');
-    if (f.features.includes('五险') || f.features.includes('五险一金')) tags.push('<span class="tag good">五险一金</span>');
-    if (f.features.includes('日结')) tags.push('<span class="tag warn">日结</span>');
-    if (f.features.includes('不体检')) tags.push('<span class="tag good">不体检</span>');
-    if (f.features.includes('包吃包住') || f.features.includes('厂吃厂住')) tags.push('<span class="tag">包吃住</span>');
-    if (f.features.includes('不穿无尘服')) tags.push('<span class="tag good">不穿无尘服</span>');
-
-    return `
-      <div class="rec-detail-card" data-name="${f.name}" data-full="${f.fullName}">
-        <div class="rec-detail-header">
-          <span class="rec-star">⭐</span>
-          <span class="rec-detail-name">${f.name}</span>
-          <span style="margin-left:auto;font-size:0.68rem;font-weight:600;color:var(--primary);padding:2px 10px;border-radius:10px;background:var(--primary-light);flex-shrink:0;">${f.area}</span>
-        </div>
-        <div class="rec-detail-info">
-          <span><span class="label">性别</span><span class="value">${f.gender}</span></span>
-          <span><span class="label">年龄</span><span class="value">${f.age}</span></span>
-          <span><span class="label">班次</span><span class="value">${f.shift}</span></span>
-          <span><span class="label">月薪</span><span class="value">${f.salaryRange}元</span></span>
-        </div>
-        <div class="rec-detail-salary">${f.salary}</div>
-        ${tags.length ? `<div class="rec-detail-tags">${tags.join('')}</div>` : ''}
-        ${f.remark ? `<div style="margin-top:4px;font-size:0.7rem;color:var(--text-muted);padding-top:4px;border-top:1px dashed var(--border);">${f.remark}</div>` : ''}
+function openDetail(f){
+  if(!f) return;
+  dom.modalTitle.textContent=f.name;
+  dom.modalBody.innerHTML=`
+    <div class="modal-detail-grid">
+      <div class="detail-block">
+        <div class="detail-block-title">基本信息</div>
+        <dl class="detail-row">
+          <dt>全称</dt><dd>${f.fullName}</dd>
+          <dt>地址</dt><dd>${f.address||'未提供'}</dd>
+        </dl>
       </div>
-    `;
-  }).join('');
-
-  dom.recDetail.querySelectorAll('.rec-detail-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const name = card.dataset.name;
-      const full = card.dataset.full;
-      const f = factoryData.find(x => x.name === name && x.fullName === full);
-      if (f) openDetail(f);
-    });
-  });
+      <div class="detail-block">
+        <div class="detail-block-title">岗位要求</div>
+        <dl class="detail-row">
+          <dt>类型</dt><dd>${f.category}</dd>
+          <dt>性别</dt><dd>${f.gender}</dd>
+          <dt>年龄</dt><dd>${f.age}</dd>
+          <dt>班次</dt><dd>${f.shift}</dd>
+        </dl>
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">薪资待遇</div>
+        <dl class="detail-row">
+          <dt class="highlight-row">日薪</dt><dd class="highlight-row">${f.salary}</dd>
+          <dt class="highlight-row">月薪</dt><dd class="highlight-row">${f.salaryRange}元</dd>
+        </dl>
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">食宿情况</div>
+        <dl class="detail-row">
+          <dt>住宿</dt><dd>${f.housing||'未提供'}</dd>
+          <dt>餐食</dt><dd>${f.food||'未提供'}</dd>
+        </dl>
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">福利亮点</div>
+        <div class="detail-remark">${f.features||'无'}</div>
+      </div>
+      ${f.requirements?`<div class="detail-block"><div class="detail-block-title">⚠️ 注意事项</div><div class="detail-remark" style="color:var(--red)">${f.requirements}</div></div>`:''}
+      ${f.remark?`<div class="detail-block"><div class="detail-block-title">📌 备注</div><div class="detail-remark">${f.remark}</div></div>`:''}
+    </div>
+  `;
+  dom.modalOverlay.classList.add('open');
+  document.body.style.overflow='hidden';
 }
 
-// ==================== Tab 切换 ====================
-function switchTab(tab) {
-  state.currentTab = tab;
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + tab));
-  if (tab === 'recommend') renderRecommendedDetail();
-  if (tab === 'filter') renderResults();
-  // 切换时回到顶部
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+function closeDetail(){
+  dom.modalOverlay.classList.remove('open');
+  document.body.style.overflow='';
+}
+
+// ==================== Tab ====================
+function switchTab(tab){
+  state.currentTab=tab;
+  $$('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+  $$('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+tab));
+  if(tab==='recommend'){renderQuickPick();renderRecommendedDetail()}
+  if(tab==='filter'){renderAreas();renderShiftFilters();renderPaymentFilters();renderResults()}
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 // ==================== 搜索 ====================
-function handleSearch(value) {
-  state.searchQuery = value;
-  dom.searchClear.classList.toggle('visible', value.length > 0);
+function handleSearch(value){
+  state.searchQuery=value;
+  dom.searchClear.classList.toggle('visible',value.length>0);
   renderResults();
 }
+
+// ==================== 复制微信 ====================
+function copyWechat(){
+  const id=dom.wechatId.textContent;
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(id).then(()=>{
+      dom.copyBadge.textContent='已复制 ✓';
+      dom.copyBadge.classList.add('copied');
+      setTimeout(()=>{dom.copyBadge.textContent='长按复制';dom.copyBadge.classList.remove('copied')},2000);
+    }).catch(()=>fallbackCopy(id));
+  }else{fallbackCopy(id)}
+}
+function fallbackCopy(text){
+  const ta=document.createElement('textarea');
+  ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+  document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy')}catch(e){}
+  document.body.removeChild(ta);
+  dom.copyBadge.textContent='已复制 ✓';
+  dom.copyBadge.classList.add('copied');
+  setTimeout(()=>{dom.copyBadge.textContent='长按复制';dom.copyBadge.classList.remove('copied')},2000);
+}
+
+// 微信长按复制
+let longPressTimer=null;
+dom.wechatId.addEventListener('touchstart',function(e){
+  longPressTimer=setTimeout(()=>{copyWechat()},500);
+});
+dom.wechatId.addEventListener('touchend',function(){clearTimeout(longPressTimer)});
+dom.wechatId.addEventListener('touchmove',function(){clearTimeout(longPressTimer)});
 
 // ==================== 初始化 ====================
-function init() {
-  renderAreas();
-  renderShiftFilters();
-  renderPaymentFilters();
+function init(){
+  renderAreas();renderShiftFilters();renderPaymentFilters();
   switchTab('recommend');
-  renderResults();
 
-  // Tab 切换
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
-  });
+  $$('.tab-btn').forEach(btn=>{btn.addEventListener('click',()=>switchTab(btn.dataset.tab))});
 
-  // 搜索输入
-  dom.searchInput.addEventListener('input', (e) => handleSearch(e.target.value));
-  dom.searchClear.addEventListener('click', () => {
-    dom.searchInput.value = '';
-    handleSearch('');
-  });
+  dom.searchInput.addEventListener('input',e=>handleSearch(e.target.value));
+  dom.searchClear.addEventListener('click',()=>{dom.searchInput.value='';handleSearch('')});
 
-  // 详情弹窗关闭
-  dom.modalClose.addEventListener('click', closeDetail);
-  dom.modalOverlay.addEventListener('click', (e) => {
-    if (e.target === dom.modalOverlay) closeDetail();
-  });
+  dom.modalClose.addEventListener('click',closeDetail);
+  dom.modalOverlay.addEventListener('click',e=>{if(e.target===dom.modalOverlay)closeDetail()});
+
+  dom.copyBtn.addEventListener('click',copyWechat);
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  init();
-}
-</script></body></html>
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init)}else{init()}
+</script>
+</body>
+</html>
